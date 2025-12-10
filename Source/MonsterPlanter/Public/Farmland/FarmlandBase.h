@@ -48,13 +48,13 @@ public:
 
 	// 栽培場上下左右のマージン(cm)
 	UPROPERTY(EditAnywhere)
-	float Margin = 600.f;
+	float Margin = 500.f;
 
 	// 栽培区画間のマージン
 	UPROPERTY(EditAnywhere)
 	float SlotWidthMargin = 300.f;
 	UPROPERTY(EditAnywhere)
-	float SlotHeightMargin = 150.f;
+	float SlotHeightMargin = 200.f;
 
 protected:
 	// 栽培区画リスト
