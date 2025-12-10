@@ -19,7 +19,7 @@ void AGodCameraActor::BeginPlay()
 	{
 		if (AIngameGameMode* IngameGM = Cast<AIngameGameMode>(GameMode))
 		{
-			SetActorLocation(FVector(-500.f, 1750.f, 1800.f));
+			SetActorLocation(FVector(-1800.f, 0.f, 1800.f));
 			SetActorRotation(FRotator(-50.f, 0.f, 0.f));
 		}
 	}
