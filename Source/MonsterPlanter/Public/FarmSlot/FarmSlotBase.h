@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include <Components/BoxComponent.h>
 #include "FarmSlotBase.generated.h"
 
 /// <summary>
@@ -21,10 +22,15 @@ protected:
 	virtual void BeginPlay() override;
 
 public:	
+	virtual void OnConstruction(const FTransform& Transform) override;
 	virtual void Tick(float DeltaTime) override;
 
 public:
 	// 栽培区画のメインメッシュ
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	UStaticMeshComponent* MeshComp = nullptr;
+
+	// 栽培員との当たり判定用コリジョン
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UBoxComponent* BoxCollision = nullptr;
 };

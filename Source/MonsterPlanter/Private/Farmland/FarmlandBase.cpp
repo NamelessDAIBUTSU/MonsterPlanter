@@ -8,9 +8,11 @@ AFarmlandBase::AFarmlandBase()
 {
 	PrimaryActorTick.bCanEverTick = true;
 
+	RootComponent = CreateDefaultSubobject<USceneComponent>(TEXT("Root"));
+
 	// メッシュの生成
 	MeshComp = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
-	RootComponent = MeshComp;
+	MeshComp->SetupAttachment(RootComponent);
 }
 
 void AFarmlandBase::BeginPlay()
@@ -58,7 +60,8 @@ void AFarmlandBase::CreateFarmSlots()
 
 			// 生成位置
 			FVector SpawnLocation = FVector(StartXPos - DistX, StartYPos + DistY, MeshOrigin.Z + 50.f);
-			FTransform SpawnTransform = FTransform(SpawnLocation);
+			FRotator SpawnRotation = i == FarmSlotHeightNum - 1 ? FRotator(0.f, 180.f, 0.f) : FRotator::ZeroRotator;
+			FTransform SpawnTransform = FTransform(SpawnRotation, SpawnLocation);
 
 			// 栽培区画の生成
 			AFarmSlotBase* NewSlot = GetWorld()->SpawnActor<AFarmSlotBase>(FarmSlotClass, SpawnTransform);
