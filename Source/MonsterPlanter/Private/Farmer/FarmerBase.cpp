@@ -2,6 +2,7 @@
 
 
 #include "Farmer/FarmerBase.h"
+#include <Farmland/FarmlandBase.h>
 
 AFarmerBase::AFarmerBase()
 {
@@ -19,5 +20,11 @@ void AFarmerBase::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+}
+
+// 配属先栽培場の設定
+void AFarmerBase::AssignFarmland(AFarmlandBase* Farmland)
+{
+	AssignedFarmland = Farmland;
 }
 

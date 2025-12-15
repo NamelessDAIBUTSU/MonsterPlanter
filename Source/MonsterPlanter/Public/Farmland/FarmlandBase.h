@@ -1,11 +1,12 @@
-﻿// Fill out your copyright notice in the Description page of Project Settings.
-
-#pragma once
+﻿#pragma once
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include <FarmSlot/FarmSlotBase.h>
+#include "Farmland/Waypoint.h"
 #include "FarmlandBase.generated.h"
+
+class AFarmerBase;
 
 /// <summary>
 /// 栽培場の基本クラス
@@ -25,9 +26,19 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 public:
+	// ウェイポイントの取得
+	const TArray<FWaypoint>& GetWaypoints() const { return Waypoints; }
+
+	// 次のウェイポイントのインデックスを取得
+	int GetNextWaypointIndex(int Index);
+
+private:
 	// 栽培区画の生成
 	void CreateFarmSlots();
-
+	// ウェイポイントの生成
+	void CreateWaypoints();
+	// 栽培員の生成
+	void SpawnDefaultFarmers();
 
 public:
 	// 栽培場のメインメッシュ
@@ -56,6 +67,19 @@ public:
 	UPROPERTY(EditAnywhere)
 	float SlotHeightMargin = 200.f;
 
+	// 生成する栽培員クラス
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<AFarmerBase> DefaultFarmerClass;
+
+public: /* ウェイポイント */
+	// 栽培員周回用のウェイポイント配置オフセット
+	UPROPERTY(EditAnywhere)
+	float WaypointOffset = 250.f;
+
+	// ウェイポイント
+	UPROPERTY(EditAnywhere)
+	TArray<FWaypoint> Waypoints;
+
 protected:
 	// 栽培区画リスト
 	UPROPERTY(BlueprintReadOnly)
@@ -63,4 +87,8 @@ protected:
 
 	// 栽培区画のメッシュサイズ
 	FVector SlotMeshExtent = FVector::Zero();
+
+	// 栽培員リスト
+	UPROPERTY(BlueprintReadOnly)
+	TArray<AFarmerBase*> Farmers;
 };

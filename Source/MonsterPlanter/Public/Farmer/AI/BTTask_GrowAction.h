@@ -3,14 +3,14 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Farmer/FarmerBase.h"
-#include "DefaultFarmer.generated.h"
+#include "BehaviorTree/BTTaskNode.h"
+#include "BTTask_GrowAction.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class MONSTERPLANTER_API ADefaultFarmer : public AFarmerBase
+class MONSTERPLANTER_API UBTTask_GrowAction : public UBTTaskNode
 {
 	GENERATED_BODY()
 	
