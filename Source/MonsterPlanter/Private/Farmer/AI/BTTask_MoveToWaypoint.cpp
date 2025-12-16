@@ -50,7 +50,11 @@ EBTNodeResult::Type UBTTask_MoveToWaypoint::ExecuteTask(UBehaviorTreeComponent& 
 	FWaypoint TargetWaypoint = Farmer->GetTargetWaypoint();
 
 	// 毎フレーム移動する速度を計算して保存
-	MyMemory->MoveSpeed = (TargetWaypoint.WaypointLocation - Farmer->GetActorLocation()).GetSafeNormal() * Farmer->MoveSpeed;
+	FVector Direction = (TargetWaypoint.WaypointLocation - Farmer->GetActorLocation()).GetSafeNormal();
+	MyMemory->MoveSpeed = Direction * Farmer->MoveSpeed;
+
+	// 進行方向への回転
+	Farmer->SetActorRotation(Direction.Rotation());
 
 	return EBTNodeResult::InProgress;
 }
