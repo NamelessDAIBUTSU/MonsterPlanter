@@ -73,8 +73,10 @@ private:
 
 	// 壁タイルの数
 	UPROPERTY()
-	int32 WallTileWidth = 0;
-	int32 WallTileHeight = 0;
+	int32 UDWallTileWidth = 0;
+	int32 UDWallTileHeight = 0;
+	int32 LRWallTileWidth = 0;
+	int32 LRWallTileHeight = 0;
 
 	// 天井タイルの数
 	UPROPERTY()

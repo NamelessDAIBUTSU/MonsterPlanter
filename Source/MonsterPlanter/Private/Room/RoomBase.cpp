@@ -106,6 +106,11 @@ void ARoomBase::SetupWalls()
 		FRotator TileRotation = FRotator::ZeroRotator;
 		float TileOffset = 0.f;
 
+		// ループ回数
+		bool bIsUDWall = (dir % 2 == 0);
+		int WallTileWidth = bIsUDWall ? UDWallTileWidth : LRWallTileWidth;
+		int WallTileHeight = bIsUDWall ? UDWallTileHeight : LRWallTileHeight;
+
 		for (int i = 0; i < WallTileHeight; ++i)
 		{
 			for (int j = 0; j < WallTileWidth; ++j)
@@ -254,7 +259,7 @@ void ARoomBase::SetupMainLight()
 	// ライト設定
 	Spot->SetIntensity(LayoutData->MainLightIntensity);
 	Spot->SetLightColor(LayoutData->MainLightColor);
-	Spot->SetAttenuationRadius(LayoutData->RoomSize.Z);
+	Spot->SetAttenuationRadius(3000.f);
 	//Spot->SetInnerConeAngle(20.0f);
 	//Spot->SetOuterConeAngle(45.0f);
 
@@ -283,8 +288,10 @@ void ARoomBase::InitializeTileCounts()
 	FloorTileWidth = LayoutData->RoomSize.X / ROOM_TILE_SIZE;
 	FloorTileHeight = LayoutData->RoomSize.Y / ROOM_TILE_SIZE;
 
-	WallTileWidth = LayoutData->RoomSize.X / ROOM_TILE_SIZE;
-	WallTileHeight = LayoutData->RoomSize.Z / ROOM_TILE_SIZE;
+	UDWallTileWidth = LayoutData->RoomSize.X / ROOM_TILE_SIZE;
+	UDWallTileHeight = LayoutData->RoomSize.Z / ROOM_TILE_SIZE;
+	LRWallTileWidth = LayoutData->RoomSize.Y / ROOM_TILE_SIZE;
+	LRWallTileHeight = LayoutData->RoomSize.Z / ROOM_TILE_SIZE;
 
 	RoofTileWidth = LayoutData->RoomSize.X / ROOM_TILE_SIZE;
 	RoofTileHeight = LayoutData->RoomSize.Y / ROOM_TILE_SIZE;
