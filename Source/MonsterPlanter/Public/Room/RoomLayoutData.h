@@ -67,6 +67,10 @@ public: /* ライト情報 */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Light")
 	FLinearColor SubLightColor = FLinearColor::White;
 
+public: /* カメラ情報 */
+	// FOV
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Camera")
+	float CameraFOV = 90.0f;
 
 public: /* 配置情報 */
 	// 装飾の位置

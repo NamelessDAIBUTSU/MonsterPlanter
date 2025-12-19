@@ -8,6 +8,7 @@
 #include "FloorTile.h"
 #include "WallTile.h"
 #include "RoofTile.h"
+#include "Camera/CameraComponent.h"
 #include "RoomBase.generated.h"
 
 // 魔王城の部屋の基本クラス
@@ -47,6 +48,9 @@ private:
 	// タイルの数を初期化
 	void InitializeTileCounts();
 
+	// カメラを天井の左下（X=0, Y=Height-1）のすぐ下に配置する
+	void SetupCamera();
+
 public:
 	// 部屋のレイアウト情報
 	UPROPERTY(EditAnywhere,BlueprintReadWrite)
@@ -63,6 +67,10 @@ public:
 	// 天井配置用の親コンポーネント
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	USceneComponent* RoofRootComp = nullptr;
+
+	// カメラを天井からどれだけ下げるか
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	float CameraDistanceBelowRoof = 50.f;
 
 
 private:
@@ -98,4 +106,8 @@ private:
 	// 繋がっている次の部屋
 	UPROPERTY()
 	ARoomBase* NextRoom = nullptr;
+
+	// 部屋カメラ
+	UPROPERTY()
+	class ARoomCamera* RoomCamera = nullptr;
 };

@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Camera/CameraActor.h"
+#include "Camera/IngameCameraBase.h"
 #include "GodCameraActor.generated.h"
 
 /**
@@ -11,7 +11,7 @@
  * PlayerController から PanCamera / ZoomCamera / RotateCamera を呼んで操作します。
  */
 UCLASS()
-class MONSTERPLANTER_API AGodCameraActor : public ACameraActor
+class MONSTERPLANTER_API AGodCameraActor : public AIngameCameraBase
 {
 	GENERATED_BODY()
 

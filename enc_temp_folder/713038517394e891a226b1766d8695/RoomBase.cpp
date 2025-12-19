@@ -359,7 +359,7 @@ inline void ARoomBase::SetupCamera()
 		// 部屋の中心座標を計算
 		float CenterX = (RoofTiles[RoofTiles.Num() - 1]->GetActorLocation().X - RoofTiles[0]->GetActorLocation().X) * 0.5f;
 		float CenterY = (RoofTiles[RoofTiles.Num() - 1]->GetActorLocation().Y - RoofTiles[0]->GetActorLocation().Y) * 0.5f;
-		float CenterZ = ROOM_TILE_THICKNESS * 0.5f + LayoutData->RoomSize.Z * 0.1f;
+		float CenterZ = ROOM_TILE_THICKNESS * 0.5f + LayoutData->RoomSize.Z * 0.4f;
 		FVector CenterLocation = FVector(CenterX, CenterY, CenterZ);
 
 		// 視線は部屋中心に向ける

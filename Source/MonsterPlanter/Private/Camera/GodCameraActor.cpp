@@ -9,6 +9,8 @@
 AGodCameraActor::AGodCameraActor()
 {
 	PrimaryActorTick.bCanEverTick = true;
+
+	CameraChannel = ECameraChannel::God;
 }
 
 void AGodCameraActor::BeginPlay()
