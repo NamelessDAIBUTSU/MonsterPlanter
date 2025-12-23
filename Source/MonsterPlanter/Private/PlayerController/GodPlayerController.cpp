@@ -86,7 +86,7 @@ void AGodPlayerController::SwitchCamera()
 		if (NextCamera)
 		{
 			// プレイヤーのビューをこのカメラに固定
-			SetViewTargetWithBlend(NextCamera, 0.0f);
+			SetViewTargetWithBlend(NextCamera, 0.f);
 
 			// 現在のカメラを設定
 			CameraManager->SetCurrentCamera(NextCamera);

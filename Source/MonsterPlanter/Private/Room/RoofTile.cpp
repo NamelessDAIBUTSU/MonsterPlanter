@@ -1,7 +1,7 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "Room/RoofTile.h"
+#include "Room/Tile/RoofTile.h"
 
 // Sets default values
 ARoofTile::ARoofTile()
@@ -9,9 +9,6 @@ ARoofTile::ARoofTile()
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
-	// メッシュコンポーネントを作成してルートコンポーネントに設定
-	MeshComp = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
-	RootComponent = MeshComp;
 }
 
 // Called when the game starts or when spawned

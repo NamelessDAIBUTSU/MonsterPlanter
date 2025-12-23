@@ -66,24 +66,29 @@ void ARoomBase::SetupRoomLayout()
 // 床の配置
 void ARoomBase::SetupFloor()
 {
-	if (LayoutData == nullptr || LayoutData->FloorClass == nullptr)
+	if (LayoutData == nullptr)
 		return;
+
 
 	// 床の生成
 	for (int i = 0; i < FloorTileHeight; ++i)
 	{
 		for (int j = 0; j < FloorTileWidth;++j)
 		{
-			AActor* FloorTile = GetWorld()->SpawnActor<AActor>(LayoutData->FloorClass);
-			if (FloorTile == nullptr)
+			if (LayoutData->FloorTiles.IsValidIndex(i) == false)
 				return;
 
-			if (AFloorTile* FloorTileActor = Cast<AFloorTile>(FloorTile))
+			FFloorRow FloorRow = LayoutData->FloorTiles[i];
+			if (FloorRow.RowCells.IsValidIndex(j) == false)
+			auto FloorClass = FloorRow.RowCells[j];
+
+			AFloorTile* FloorTile = GetWorld()->SpawnActor<AFloorTile>(FloorClass);
+			if (FloorTile)
 			{
-				FloorTiles.Add(FloorTileActor);
+				FloorTiles.Add(FloorTile);
 
 				// 床タイルを床配置用の親コンポーネントにアタッチ
-				FloorTileActor->AttachToComponent(FloorRootComp, FAttachmentTransformRules::KeepRelativeTransform);
+				FloorTile->AttachToComponent(FloorRootComp, FAttachmentTransformRules::KeepRelativeTransform);
 
 				// 床タイルの位置を設定
 				FVector TileLocation;
@@ -91,7 +96,7 @@ void ARoomBase::SetupFloor()
 				TileLocation.Y = i * ROOM_TILE_SIZE;
 				// Z = 0 に配置
 				TileLocation.Z = 0.0f;
-				FloorTileActor->SetActorRelativeLocation(TileLocation);
+				FloorTile->SetActorRelativeLocation(TileLocation);
 			}
 		}
 	}
@@ -217,7 +222,7 @@ void ARoomBase::SetupRoof()
 				TileLocation.X = j * ROOM_TILE_SIZE;
 				TileLocation.Y = i * ROOM_TILE_SIZE;
 				// RoomSize.Z + タイルの厚さの半分 に配置
-				TileLocation.Z = LayoutData->RoomSize.Z + ROOM_TILE_THICKNESS * 0.5f;
+				TileLocation.Z = LayoutData->RoomHeight + ROOM_TILE_THICKNESS * 0.5f;
 				RoofTileActor->SetActorRelativeLocation(TileLocation);
 			}
 		}
@@ -246,7 +251,7 @@ void ARoomBase::SetupMainLight()
 	// 中央位置を計算（タイルの中心）
 	const float CenterX = (RoofTileWidth > 0) ? ((RoofTileWidth - 1) * 0.5f * ROOM_TILE_SIZE) : 0.f;
 	const float CenterY = (RoofTileHeight > 0) ? ((RoofTileHeight - 1) * 0.5f * ROOM_TILE_SIZE) : 0.f;
-	const float LightZ = LayoutData->RoomSize.Z + LayoutData->LightZOffset;
+	const float LightZ = LayoutData->RoomHeight + LayoutData->LightZOffset;
 
 	FVector LightLocation(CenterX, CenterY, LightZ);
 
@@ -289,19 +294,18 @@ void ARoomBase::SetupDecorationLight()
 // タイルの数を初期化
 void ARoomBase::InitializeTileCounts()
 {
-	if (LayoutData == nullptr)
+	if (LayoutData == nullptr || LayoutData->FloorTiles.IsEmpty())
 		return;
 
-	FloorTileWidth = LayoutData->RoomSize.X / ROOM_TILE_SIZE;
-	FloorTileHeight = LayoutData->RoomSize.Y / ROOM_TILE_SIZE;
+	FloorTileWidth = LayoutData->FloorTiles[0].RowCells.Num();
+	RoofTileWidth = FloorTileWidth;
+	FloorTileHeight = LayoutData->FloorTiles.Num();
+	RoofTileHeight = FloorTileHeight;
 
-	UDWallTileWidth = LayoutData->RoomSize.X / ROOM_TILE_SIZE;
-	UDWallTileHeight = LayoutData->RoomSize.Z / ROOM_TILE_SIZE;
-	LRWallTileWidth = LayoutData->RoomSize.Y / ROOM_TILE_SIZE;
-	LRWallTileHeight = LayoutData->RoomSize.Z / ROOM_TILE_SIZE;
-
-	RoofTileWidth = LayoutData->RoomSize.X / ROOM_TILE_SIZE;
-	RoofTileHeight = LayoutData->RoomSize.Y / ROOM_TILE_SIZE;
+	UDWallTileWidth = FloorTileWidth;
+	UDWallTileHeight = LayoutData->RoomHeight / ROOM_TILE_SIZE;
+	LRWallTileWidth = RoofTileHeight;
+	LRWallTileHeight = LayoutData->RoomHeight / ROOM_TILE_SIZE;
 }
 
 // カメラを天井の左下（X=0, Y=Height-1）のすぐ下に配置する
@@ -359,7 +363,7 @@ inline void ARoomBase::SetupCamera()
 		// 部屋の中心座標を計算
 		float CenterX = (RoofTiles[RoofTiles.Num() - 1]->GetActorLocation().X - RoofTiles[0]->GetActorLocation().X) * 0.5f;
 		float CenterY = (RoofTiles[RoofTiles.Num() - 1]->GetActorLocation().Y - RoofTiles[0]->GetActorLocation().Y) * 0.5f;
-		float CenterZ = ROOM_TILE_THICKNESS * 0.5f + LayoutData->RoomSize.Z * 0.1f;
+		float CenterZ = ROOM_TILE_THICKNESS * 0.5f + LayoutData->RoomHeight * 0.1f;
 		FVector CenterLocation = FVector(CenterX, CenterY, CenterZ);
 
 		// 視線は部屋中心に向ける

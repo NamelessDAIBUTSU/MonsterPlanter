@@ -4,11 +4,27 @@
 
 #include "CoreMinimal.h"
 #include "Engine/DataAsset.h"
+#include "Tile/FloorTile.h"
+#include "Tile/WallTile.h"
+#include "Tile/RoofTile.h"
 #include "RoomLayoutData.generated.h"
 
-/**
- * 
- */
+/// <summary>
+/// 1行の床データ
+/// </summary>
+USTRUCT(BlueprintType)
+struct FFloorRow
+{
+	GENERATED_BODY()
+
+public:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TArray<TSubclassOf<AFloorTile>> RowCells;
+};
+
+/// <summary>
+/// 部屋データ
+/// </summary>
 UCLASS()
 class MONSTERPLANTER_API URoomLayoutData : public UDataAsset
 {
@@ -23,26 +39,31 @@ public: /* 部屋の基本情報 */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (MultiLine = true))
 	FString RoomDescription;
 
-	// 部屋のサイズ
+	// 天井までの高さ
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
-	FVector RoomSize;
+	float RoomHeight = 1000.f;
 
-public: /* 使用するモジュールの種類 */
+	// モンスターの配置可能数
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	int32 MaxMonsterCount = 5;
+
+public: /* モジュール */
 	// 床
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Modules")
-	TSubclassOf<AActor> FloorClass;
+	TArray<FFloorRow> FloorTiles;
 
 	// 壁
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Modules")
-	TSubclassOf<AActor> WallClass;
+	TSubclassOf<AWallTile> WallClass;
 
 	// 天井
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Modules")
-	TSubclassOf<AActor> RoofClass;
+	TSubclassOf<ARoofTile> RoofClass;
 
 	// 初期配置される装飾
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Modules")
 	TArray<TSubclassOf<AActor>> InitialDecorations;
+
 
 public: /* ライト情報 */
 	// 配置オフセット

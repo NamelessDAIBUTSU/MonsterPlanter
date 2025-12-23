@@ -3,11 +3,11 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameFramework/Actor.h"
+#include "Room/Tile/TileBase.h"
 #include "RoofTile.generated.h"
 
 UCLASS()
-class MONSTERPLANTER_API ARoofTile : public AActor
+class MONSTERPLANTER_API ARoofTile : public ATileBase
 {
 	GENERATED_BODY()
 	
@@ -22,9 +22,4 @@ protected:
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
-
-public:
-	// 天井タイルのメッシュコンポーネント
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	UStaticMeshComponent* MeshComp = nullptr;
 };

@@ -12,6 +12,7 @@
 UENUM(BlueprintType)
 enum class ERoomType : uint8
 {
-    Standard      UMETA(DisplayName = "スタンダード"),
-    Devil         UMETA(DisplayName = "魔王部屋"),
+    Standard    UMETA(DisplayName = "スタンダード"),
+    Farm        UMETA(DisplayName = "農場"),
+    Devil       UMETA(DisplayName = "魔王部屋"),
 };

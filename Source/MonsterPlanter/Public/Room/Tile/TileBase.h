@@ -4,21 +4,25 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "WallTile.generated.h"
+#include "TileBase.generated.h"
 
 UCLASS()
-class MONSTERPLANTER_API AWallTile : public AActor
+class MONSTERPLANTER_API ATileBase : public AActor
 {
 	GENERATED_BODY()
 	
 public:	
-	AWallTile();
+	ATileBase();
 
 protected:
 	virtual void BeginPlay() override;
 
 public:	
 	virtual void Tick(float DeltaTime) override;
+
+public:
+	// マテリアルの設定
+	void SetTileMaterial(UMaterialInterface* Material);
 
 public:
 	// 壁タイルのメッシュコンポーネント

@@ -21,7 +21,7 @@ void AGodCameraActor::BeginPlay()
 	{
 		if (AIngameGameMode* IngameGM = Cast<AIngameGameMode>(GameMode))
 		{
-			SetActorLocation(FVector(-750.f, 0.f, 1100.f));
+			SetActorLocation(FVector(-800.f, 4000.f, 1100.f));
 			SetActorRotation(FRotator(-60.f, 0.f, 0.f));
 		}
 	}

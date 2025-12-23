@@ -1,23 +1,24 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "Room/Tile/WallTile.h"
+#include "Monster/MonsterBase.h"
 
-AWallTile::AWallTile()
+AMonsterBase::AMonsterBase()
 {
 	PrimaryActorTick.bCanEverTick = true;
-
+	
 }
 
-void AWallTile::BeginPlay()
+void AMonsterBase::BeginPlay()
 {
 	Super::BeginPlay();
 	
 }
 
-void AWallTile::Tick(float DeltaTime)
+void AMonsterBase::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
 }
+
 

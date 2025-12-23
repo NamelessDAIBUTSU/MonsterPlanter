@@ -4,15 +4,16 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "FloorTile.generated.h"
+#include "Room/Tile/TileBase.h"
+#include "WallTile.generated.h"
 
 UCLASS()
-class MONSTERPLANTER_API AFloorTile : public AActor
+class MONSTERPLANTER_API AWallTile : public ATileBase
 {
 	GENERATED_BODY()
 	
 public:	
-	AFloorTile();
+	AWallTile();
 
 protected:
 	virtual void BeginPlay() override;
@@ -20,8 +21,4 @@ protected:
 public:	
 	virtual void Tick(float DeltaTime) override;
 
-public:
-	// 床タイルのメッシュコンポーネント
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	UStaticMeshComponent* MeshComp = nullptr;
 };

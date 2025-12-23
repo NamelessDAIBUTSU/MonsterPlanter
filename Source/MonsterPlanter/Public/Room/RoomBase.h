@@ -5,9 +5,9 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "RoomLayoutData.h"
-#include "FloorTile.h"
-#include "WallTile.h"
-#include "RoofTile.h"
+#include "Tile/FloorTile.h"
+#include "Tile/WallTile.h"
+#include "Tile/RoofTile.h"
 #include "Camera/CameraComponent.h"
 #include "RoomBase.generated.h"
 
