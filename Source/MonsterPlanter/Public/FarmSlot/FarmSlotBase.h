@@ -14,23 +14,23 @@ UCLASS()
 class MONSTERPLANTER_API AFarmSlotBase : public AActor
 {
 	GENERATED_BODY()
-	
-public:	
+
+public:
 	AFarmSlotBase();
 
 protected:
 	virtual void BeginPlay() override;
 
-public:	
+public:
 	virtual void OnConstruction(const FTransform& Transform) override;
 	virtual void Tick(float DeltaTime) override;
 
 public:
 	// 栽培区画のメインメッシュ
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	UStaticMeshComponent* MeshComp = nullptr;
+	TObjectPtr<UStaticMeshComponent> MeshComp = nullptr;
 
 	// 栽培員との当たり判定用コリジョン
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	UBoxComponent* BoxCollision = nullptr;
+	TObjectPtr<UBoxComponent> BoxCollision = nullptr;
 };

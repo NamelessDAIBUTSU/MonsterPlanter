@@ -27,5 +27,5 @@ public:
 public:
 	// 壁タイルのメッシュコンポーネント
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	UStaticMeshComponent* MeshComp = nullptr;
+	TObjectPtr < UStaticMeshComponent> MeshComp = nullptr;
 };

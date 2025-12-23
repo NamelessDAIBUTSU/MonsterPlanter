@@ -27,6 +27,10 @@ ARoomBase::ARoomBase()
 	// 天井配置用の親コンポーネントを作成
 	RoofRootComp = CreateDefaultSubobject<USceneComponent>(TEXT("RoofRootComp"));
 	RoofRootComp->SetupAttachment(RootComponent);
+
+	// グリッド線表示用の親コンポーネントを作成
+	GridLineRootComp = CreateDefaultSubobject<USceneComponent>(TEXT("GridLineRootComp"));
+	GridLineRootComp->SetupAttachment(RootComponent);
 }
 
 void ARoomBase::BeginPlay()
@@ -56,11 +60,14 @@ void ARoomBase::SetupRoomLayout()
 	// 天井の配置
 	SetupRoof();
 
-	// 天井から下向きにライトを配置（天井中央に1つ）
+	// 天井から下向きにライトを配置
 	SetupLights();
 
 	// カメラの配置
 	SetupCamera();
+
+	// 部屋の初期化
+	InitializeRoom();
 }
 
 // 床の配置
@@ -80,6 +87,8 @@ void ARoomBase::SetupFloor()
 
 			FFloorRow FloorRow = LayoutData->FloorTiles[i];
 			if (FloorRow.RowCells.IsValidIndex(j) == false)
+				return;
+
 			auto FloorClass = FloorRow.RowCells[j];
 
 			AFloorTile* FloorTile = GetWorld()->SpawnActor<AFloorTile>(FloorClass);

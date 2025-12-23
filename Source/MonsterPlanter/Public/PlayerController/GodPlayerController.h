@@ -47,7 +47,7 @@ public:
 private:
 	// カメラマネージャー
 	UPROPERTY()
-	class UCameraManager* CameraManager = nullptr;
+	TObjectPtr<class UCameraManager> CameraManager = nullptr;
 
 	// 現在のカメラチャンネル
 	ECameraChannel CurrentCameraChannel = ECameraChannel::God;

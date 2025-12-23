@@ -23,5 +23,5 @@ protected:
 
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AI")
-	class UBehaviorTree* BehaviorTreeAsset = nullptr;
+	TObjectPtr<class UBehaviorTree> BehaviorTreeAsset = nullptr;
 };

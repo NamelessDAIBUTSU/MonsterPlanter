@@ -51,5 +51,5 @@ private:
 
 	// 配属された栽培場
 	UPROPERTY()
-	AFarmlandBase* AssignedFarmland = nullptr;
+	TObjectPtr<AFarmlandBase> AssignedFarmland = nullptr;
 };

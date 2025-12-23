@@ -26,47 +26,56 @@ protected:
 public:	
 	virtual void Tick(float DeltaTime) override;
 
-private:
-	// 部屋のレイアウトに基づいてモジュールを配置
-	void SetupRoomLayout();
+protected:
+	// 部屋を初期化
+	virtual void InitializeRoom() {}
+
 	// 床の配置
-	void SetupFloor();
+	virtual void SetupFloor();
 	// 壁の配置
-	void SetupWalls();
+	virtual void SetupWalls();
 	// 天井の配置
-	void SetupRoof();
+	virtual void SetupRoof();
 
 	// ライトを配置
-	void SetupLights();
+	virtual void SetupLights();
 	// メインライトを配置
-	void SetupMainLight();
+	virtual void SetupMainLight();
 	// 補助ライトを配置
-	void SetupSubLights();
+	virtual void SetupSubLights();
 	// 演出ライトを配置
-	void SetupDecorationLight();
+	virtual void SetupDecorationLight();
 
+	// カメラを天井の左下（X=0, Y=Height-1）のすぐ下に配置する
+	virtual void SetupCamera();
+
+private:
 	// タイルの数を初期化
 	void InitializeTileCounts();
 
-	// カメラを天井の左下（X=0, Y=Height-1）のすぐ下に配置する
-	void SetupCamera();
+	// 部屋のレイアウトに基づいてモジュールを配置
+	void SetupRoomLayout();
 
 public:
 	// 部屋のレイアウト情報
 	UPROPERTY(EditAnywhere,BlueprintReadWrite)
-	URoomLayoutData* LayoutData = nullptr;
+	TObjectPtr<URoomLayoutData> LayoutData = nullptr;
 
 	// 床配置用の親コンポーネント
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	USceneComponent* FloorRootComp = nullptr;
+	TObjectPtr<USceneComponent> FloorRootComp = nullptr;
 
 	// 壁配置用の親コンポーネント
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	USceneComponent* WallRootComp = nullptr;
+	TObjectPtr<USceneComponent> WallRootComp = nullptr;
 
 	// 天井配置用の親コンポーネント
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	USceneComponent* RoofRootComp = nullptr;
+	TObjectPtr<USceneComponent> RoofRootComp = nullptr;
+
+	// グリッド線表示用の親コンポーネント
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TObjectPtr<USceneComponent> GridLineRootComp = nullptr;
 
 	// カメラを天井からどれだけ下げるか
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
