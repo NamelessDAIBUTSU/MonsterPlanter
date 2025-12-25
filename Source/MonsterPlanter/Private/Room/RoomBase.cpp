@@ -3,11 +3,11 @@
 #include "Room/RoomBase.h"
 #include <Room/RoomDef.h>
 #include "Components/PointLightComponent.h"
-#include "Components/SpotLightComponent.h"
 #include <Camera/RoomCamera.h>
 #include <Kismet/GameplayStatics.h>
 #include <PlayerController/GodPlayerController.h>
 #include <Camera/CameraManager.h>
+#include <Camera/CameraComponent.h>
 
 ARoomBase::ARoomBase()
 {
@@ -27,17 +27,12 @@ ARoomBase::ARoomBase()
 	// 天井配置用の親コンポーネントを作成
 	RoofRootComp = CreateDefaultSubobject<USceneComponent>(TEXT("RoofRootComp"));
 	RoofRootComp->SetupAttachment(RootComponent);
-
-	// グリッド線表示用の親コンポーネントを作成
-	GridLineRootComp = CreateDefaultSubobject<USceneComponent>(TEXT("GridLineRootComp"));
-	GridLineRootComp->SetupAttachment(RootComponent);
 }
 
 void ARoomBase::BeginPlay()
 {
 	Super::BeginPlay();
-	
-	// 部屋のレイアウトに基づいてモジュールを配置
+
 	SetupRoomLayout();
 }
 
@@ -70,10 +65,23 @@ void ARoomBase::SetupRoomLayout()
 	InitializeRoom();
 }
 
+// グリッド線の表示切替
+void ARoomBase::ToggleVisibleGrid()
+{
+	for (AFloorTile* FloorTile : FloorTiles)
+	{
+		if (FloorTile)
+		{
+			bool bNextVisible = !FloorTile->GetGridLineVisible();
+			FloorTile->SetGridLineVisible(bNextVisible);
+		}
+	}
+}
+
 // 床の配置
 void ARoomBase::SetupFloor()
 {
-	if (LayoutData == nullptr)
+	if (LayoutData.IsNull())
 		return;
 
 
@@ -114,7 +122,7 @@ void ARoomBase::SetupFloor()
 // 壁の配置
 void ARoomBase::SetupWalls()
 {
-	if (LayoutData == nullptr || LayoutData->WallClass == nullptr)
+	if (LayoutData.IsNull() || LayoutData->WallClass == nullptr)
 		return;
 
 	// タイル幅のオフセット
@@ -207,7 +215,7 @@ void ARoomBase::SetupWalls()
 // 天井の配置
 void ARoomBase::SetupRoof()
 {
-	if (LayoutData == nullptr || LayoutData->RoofClass == nullptr)
+	if (LayoutData.IsNull() || LayoutData->RoofClass == nullptr)
 		return;
 
 	// 天井の生成
@@ -254,7 +262,7 @@ void ARoomBase::SetupLights()
 // メインライトを配置
 void ARoomBase::SetupMainLight()
 {
-	if (LayoutData == nullptr || RoofRootComp == nullptr)
+	if (LayoutData.IsNull() || RoofRootComp == nullptr)
 		return;
 
 	// 中央位置を計算（タイルの中心）
@@ -303,7 +311,7 @@ void ARoomBase::SetupDecorationLight()
 // タイルの数を初期化
 void ARoomBase::InitializeTileCounts()
 {
-	if (LayoutData == nullptr || LayoutData->FloorTiles.IsEmpty())
+	if (LayoutData.IsNull() || LayoutData->FloorTiles.IsEmpty())
 		return;
 
 	FloorTileWidth = LayoutData->FloorTiles[0].RowCells.Num();
@@ -318,31 +326,26 @@ void ARoomBase::InitializeTileCounts()
 }
 
 // カメラを天井の左下（X=0, Y=Height-1）のすぐ下に配置する
-inline void ARoomBase::SetupCamera()
+void ARoomBase::SetupCamera()
 {
+	if (LayoutData.IsNull())
+		return;
+
 	// プレイヤーコントローラーからカメラマネージャーを取得
 	APlayerController* PlayerController = UGameplayStatics::GetPlayerController(GetWorld(), 0);
 	if (PlayerController == nullptr)
 		return;
 
-	// プレイヤーコントローラーをキャスト
-	AGodPlayerController* GodPC = Cast<AGodPlayerController>(PlayerController);
-	if (GodPC == nullptr)
-		return;
-
 	// カメラマネージャーを取得
-	UCameraManager* CameraManager = GodPC->GetCameraManager();
+	UCameraManager* CameraManager = GetWorld()->GetSubsystem<UCameraManager>();
 	if (CameraManager == nullptr)
 		return;
+
 
 	// カメラの生成
 	RoomCamera = GetWorld()->SpawnActor<ARoomCamera>();
 	if (RoomCamera == nullptr)
 		return;
-
-	if (LayoutData == nullptr)
-		return;
-
 
 	// カメラマネージャーに登録
 	CameraManager->RegisterCamera(RoomCamera);
@@ -362,8 +365,8 @@ inline void ARoomBase::SetupCamera()
 	FVector CameraWorldLocation = FVector::ZeroVector;
 	FRotator CameraWorldRotation = FRotator::ZeroRotator;
 
-	// まずは指定の屋根タイルの下に配置を試みる
-	if (RoofTiles.IsValidIndex(Index) && RoofTiles[Index] != nullptr)
+	// 指定の屋根タイルの下に配置
+	if (RoofTiles.IsValidIndex(Index) && RoofTiles[Index].IsNull() == false)
 	{
 		// 屋根タイルのワールド位置を取得し、Z 方向に CameraDistanceBelowRoof 分下げる
 		CameraWorldLocation = RoofTiles[Index]->GetActorLocation() - FVector(0.f, 0.f, ROOM_TILE_THICKNESS);
@@ -372,8 +375,8 @@ inline void ARoomBase::SetupCamera()
 		// 部屋の中心座標を計算
 		float CenterX = (RoofTiles[RoofTiles.Num() - 1]->GetActorLocation().X - RoofTiles[0]->GetActorLocation().X) * 0.5f;
 		float CenterY = (RoofTiles[RoofTiles.Num() - 1]->GetActorLocation().Y - RoofTiles[0]->GetActorLocation().Y) * 0.5f;
-		float CenterZ = ROOM_TILE_THICKNESS * 0.5f + LayoutData->RoomHeight * 0.1f;
-		FVector CenterLocation = FVector(CenterX, CenterY, CenterZ);
+		FVector CenterLocation = RoofTiles[0]->GetActorLocation() + FVector(CenterX, CenterY, 0.f);
+		CenterLocation.Z = ROOM_TILE_THICKNESS * 0.5f + LayoutData->RoomHeight * 0.1f;
 
 		// 視線は部屋中心に向ける
 		CameraWorldRotation = (CenterLocation - RoomCamera->GetActorLocation()).Rotation();

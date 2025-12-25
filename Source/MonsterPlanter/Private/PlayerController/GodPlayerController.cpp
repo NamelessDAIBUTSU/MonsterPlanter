@@ -4,19 +4,13 @@
 #include "Kismet/GameplayStatics.h"
 #include "Camera/GodCameraActor.h"
 #include <Camera/CameraManager.h>
+#include <Room/RoomManager.h>
 #include <EnhancedInputSubsystems.h>
 #include <EnhancedInputComponent.h>
 
 AGodPlayerController::AGodPlayerController()
 {
-	// カメラマネージャー生成
-	CameraManager = NewObject<UCameraManager>();
 
-	// カメラマネージャー初期化
-	if (CameraManager)
-	{
-		CameraManager->Initialize();
-	}
 }
 
 void AGodPlayerController::BeginPlay()
@@ -36,6 +30,7 @@ void AGodPlayerController::BeginPlay()
 	}
 
 	// カメラ生成
+	UCameraManager* CameraManager = GetWorld()->GetSubsystem<UCameraManager>();
 	if (CameraManager)
 	{
 		if (AGodCameraActor* Camera = GetWorld()->SpawnActor<AGodCameraActor>())
@@ -59,6 +54,7 @@ void AGodPlayerController::SetupInputComponent()
 		// カメラ切り替え
 		EIC->BindAction(IAGodCamera, ETriggerEvent::Started, this, &AGodPlayerController::SwitchToGodCamera);
 		EIC->BindAction(IARoomCamera, ETriggerEvent::Started, this, &AGodPlayerController::SwitchToRoomCamera);
+		EIC->BindAction(IAToggleVisibleGrid, ETriggerEvent::Started, this, &AGodPlayerController::ToggleVisibleGridLine);
 	}
 }
 
@@ -75,10 +71,22 @@ void AGodPlayerController::SwitchToRoomCamera()
 	SwitchCamera();
 }
 
+// グリッド線の表示切替
+void AGodPlayerController::ToggleVisibleGridLine()
+{
+	// 現在の部屋を取得
+
+	// グリッド線の表示切替
+	if (URoomManager* RoomManager = GetWorld()->GetSubsystem<URoomManager>())
+	{
+		RoomManager->ToggleVisibleGrid();
+	}
+}
+
 // カメラ切り替え
 void AGodPlayerController::SwitchCamera()
 {
-	if (CameraManager)
+	if (UCameraManager* CameraManager = GetWorld()->GetSubsystem<UCameraManager>())
 	{
 		// 該当カメラの取得
 		AIngameCameraBase* NextCamera = CameraManager->GetCamera(CurrentCameraChannel);

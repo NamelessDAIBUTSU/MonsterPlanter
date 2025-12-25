@@ -21,15 +21,15 @@ protected:
 
 	
 public:
-	// カメラマネージャーの取得
-	class UCameraManager* GetCameraManager() const { return CameraManager; }
-
 	// カメラを神カメラに切り替え
 	UFUNCTION()
 	void SwitchToGodCamera();
 	// カメラを部屋カメラに切り替え
 	UFUNCTION()
 	void SwitchToRoomCamera();
+	// グリッド線の表示切替
+	UFUNCTION()
+	void ToggleVisibleGridLine();
 
 private:
 	// カメラ切り替え
@@ -43,12 +43,10 @@ public:
 	class UInputAction* IAGodCamera = nullptr;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
 	class UInputAction* IARoomCamera = nullptr;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
+	class UInputAction* IAToggleVisibleGrid = nullptr;
 
 private:
-	// カメラマネージャー
-	UPROPERTY()
-	TObjectPtr<class UCameraManager> CameraManager = nullptr;
-
 	// 現在のカメラチャンネル
 	ECameraChannel CurrentCameraChannel = ECameraChannel::God;
 };

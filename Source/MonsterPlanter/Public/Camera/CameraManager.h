@@ -3,8 +3,8 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "UObject/NoExportTypes.h"
 #include "CameraDef.h"
+#include "Subsystems/WorldSubsystem.h"
 #include "CameraManager.generated.h"
 
 class AIngameCameraBase;
@@ -13,7 +13,7 @@ class AIngameCameraBase;
  * 
  */
 UCLASS()
-class MONSTERPLANTER_API UCameraManager : public UObject
+class MONSTERPLANTER_API UCameraManager : public UWorldSubsystem
 {
 	GENERATED_BODY()
 	
@@ -21,8 +21,10 @@ public:
 	UCameraManager();
 
 public:
-	void Initialize();
-	
+	virtual void Initialize(FSubsystemCollectionBase& Collection) override;
+	virtual void Deinitialize() override {}
+
+public:
 	// カメラの登録
 	void RegisterCamera(AIngameCameraBase* NewCamera);
 	// カメラの登録解除

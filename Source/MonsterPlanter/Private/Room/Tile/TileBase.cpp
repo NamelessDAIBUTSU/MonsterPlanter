@@ -4,9 +4,11 @@ ATileBase::ATileBase()
 {
 	PrimaryActorTick.bCanEverTick = true;
 
+	RootComponent = CreateDefaultSubobject<USceneComponent>(TEXT("Root"));
+
 	// メッシュコンポーネントを作成してルートコンポーネントに設定
 	MeshComp = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
-	RootComponent = MeshComp;
+	MeshComp->SetupAttachment(RootComponent);
 }
 
 void ATileBase::BeginPlay()

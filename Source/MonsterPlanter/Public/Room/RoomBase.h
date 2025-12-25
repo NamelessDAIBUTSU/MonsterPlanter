@@ -8,7 +8,6 @@
 #include "Tile/FloorTile.h"
 #include "Tile/WallTile.h"
 #include "Tile/RoofTile.h"
-#include "Camera/CameraComponent.h"
 #include "RoomBase.generated.h"
 
 // 魔王城の部屋の基本クラス
@@ -26,8 +25,16 @@ protected:
 public:	
 	virtual void Tick(float DeltaTime) override;
 
+public:
+	// 部屋ID
+	int32 GetRoomID() const { return RoomID; }
+	void SetRoomID(int32 Id) { RoomID = Id; }
+
+	// グリッド線の表示切替
+	void ToggleVisibleGrid();
+
 protected:
-	// 部屋を初期化
+	// 部屋毎の専用初期化
 	virtual void InitializeRoom() {}
 
 	// 床の配置
@@ -57,10 +64,6 @@ private:
 	void SetupRoomLayout();
 
 public:
-	// 部屋のレイアウト情報
-	UPROPERTY(EditAnywhere,BlueprintReadWrite)
-	TObjectPtr<URoomLayoutData> LayoutData = nullptr;
-
 	// 床配置用の親コンポーネント
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TObjectPtr<USceneComponent> FloorRootComp = nullptr;
@@ -73,50 +76,48 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TObjectPtr<USceneComponent> RoofRootComp = nullptr;
 
-	// グリッド線表示用の親コンポーネント
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	TObjectPtr<USceneComponent> GridLineRootComp = nullptr;
-
-	// カメラを天井からどれだけ下げるか
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	float CameraDistanceBelowRoof = 50.f;
-
-
 private:
+	// 部屋のレイアウト情報
+	UPROPERTY(VisibleAnywhere)
+	TObjectPtr<URoomLayoutData> LayoutData = nullptr;
+
+	// 部屋ID
+	UPROPERTY(VisibleAnywhere)
+	int32 RoomID = INDEX_NONE;
+
 	// 床タイルの数
-	UPROPERTY()
 	int32 FloorTileWidth = 0;
 	int32 FloorTileHeight = 0;
 
 	// 壁タイルの数
-	UPROPERTY()
 	int32 UDWallTileWidth = 0;
 	int32 UDWallTileHeight = 0;
 	int32 LRWallTileWidth = 0;
 	int32 LRWallTileHeight = 0;
 
 	// 天井タイルの数
-	UPROPERTY()
 	int32 RoofTileWidth = 0;
 	int32 RoofTileHeight = 0;
 
 	// 床タイルオブジェクトの配列
 	UPROPERTY()
-	TArray<AFloorTile*> FloorTiles;
+	TArray<TObjectPtr<AFloorTile>> FloorTiles;
 
 	// 壁タイルオブジェクトの配列
 	UPROPERTY()
-	TArray<AWallTile*> WallTiles;
+	TArray<TObjectPtr<AWallTile>> WallTiles;
 	
 	// 天井タイルオブジェクトの配列
 	UPROPERTY()
-	TArray<ARoofTile*> RoofTiles;
+	TArray<TObjectPtr<ARoofTile>> RoofTiles;
 
-	// 繋がっている次の部屋
+	// 前後に繋がっている部屋
 	UPROPERTY()
-	ARoomBase* NextRoom = nullptr;
+	TObjectPtr<ARoomBase> NextRoom = nullptr;
+	UPROPERTY()
+	TObjectPtr<ARoomBase> PreRoom = nullptr;
 
 	// 部屋カメラ
 	UPROPERTY()
-	class ARoomCamera* RoomCamera = nullptr;
+	TObjectPtr<class ARoomCamera> RoomCamera = nullptr;
 };

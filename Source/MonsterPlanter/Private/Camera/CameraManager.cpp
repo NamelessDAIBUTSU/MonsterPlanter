@@ -3,6 +3,7 @@
 
 #include "Camera/CameraManager.h"
 #include "Camera/IngameCameraBase.h"
+#include <Room/RoomManager.h>
 
 UCameraManager::UCameraManager()
 	: CurrentCamera(nullptr)
@@ -11,10 +12,15 @@ UCameraManager::UCameraManager()
 }
 
 // 初期化
-void UCameraManager::Initialize()
+void UCameraManager::Initialize(FSubsystemCollectionBase& Collection)
 {
+	Super::Initialize(Collection);
+
 	CurrentCamera = nullptr;
 	CameraList.Empty();
+
+	// RoomManagerに依存しているため、RoomManagerを先に初期化
+	Collection.InitializeDependency<URoomManager>();
 }
 
 // カメラの登録
