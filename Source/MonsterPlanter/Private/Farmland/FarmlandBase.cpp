@@ -76,19 +76,20 @@ void AFarmlandBase::CreateFarmSlots()
 			FRotator SpawnRotation = i == FarmSlotHeightNum - 1 ? FRotator(0.f, 180.f, 0.f) : FRotator::ZeroRotator;
 			FTransform SpawnTransform = FTransform(SpawnRotation, SpawnLocation);
 
-			// 生成
-			AFarmSlotBase* NewSlot = GetWorld()->SpawnActor<AFarmSlotBase>(FarmSlotClass, SpawnTransform);
-			if (NewSlot)
-			{
-				FarmSlots.Add(NewSlot);
+			//// 生成
+			//AFarmSlotBase* NewSlot = GetWorld()->SpawnActor<AFarmSlotBase>(FarmSlotClass, SpawnTransform);
+			//if (NewSlot)
+			//{
+			//	FarmSlots.Add(NewSlot);
 
-				FBoxSphereBounds SlotBounds = NewSlot->MeshComp->Bounds;
-				SlotMeshExtent = SlotBounds.BoxExtent;
-			}
+			//	FBoxSphereBounds SlotBounds = NewSlot->MeshComp->Bounds;
+			//	SlotMeshExtent = SlotBounds.BoxExtent;
+			//}
 		}
 	}
 
 	// 中央に位置調整
+	if (FarmSlots.IsEmpty() == false)
 	{
 		// 左上と右下の区間から、中心位置を計算
 		FVector Dist = FarmSlots[FarmSlots.Num() - 1]->GetActorLocation() - FarmSlots[0]->GetActorLocation();

@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include <Components/BoxComponent.h>
+#include <FarmSlot/FarmslotDef.h>
 #include "FarmSlotBase.generated.h"
 
 /// <summary>
@@ -26,11 +26,26 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 public:
+	// 栽培可能コスト
+	UPROPERTY(EditAnywhere)
+	int32 MaxCost;
+
+	// 特性タイプ
+	UPROPERTY(EditAnywhere)
+	EFarmSlotBuffType BuffType;
+
+	// 特性パラメータ
+	UPROPERTY(EditAnywhere)
+	int32 FeatureParam;
+
+private:
 	// 栽培区画のメインメッシュ
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<UStaticMeshComponent> MeshComp = nullptr;
 
-	// 栽培員との当たり判定用コリジョン
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	TObjectPtr<UBoxComponent> BoxCollision = nullptr;
+	// 区画サイズ
+	UPROPERTY(VisibleAnywhere)
+	FVector2D SlotSize = FVector2D();
+
+	// 経験値
 };

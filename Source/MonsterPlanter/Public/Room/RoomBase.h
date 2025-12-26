@@ -76,11 +76,11 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TObjectPtr<USceneComponent> RoofRootComp = nullptr;
 
-private:
 	// 部屋のレイアウト情報
-	UPROPERTY(VisibleAnywhere)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TObjectPtr<URoomLayoutData> LayoutData = nullptr;
 
+private:
 	// 部屋ID
 	UPROPERTY(VisibleAnywhere)
 	int32 RoomID = INDEX_NONE;

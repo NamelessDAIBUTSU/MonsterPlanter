@@ -21,3 +21,11 @@ enum class ERoomType : uint8
     Farm        UMETA(DisplayName = "農場"),
     Devil       UMETA(DisplayName = "魔王部屋"),
 };
+
+// フロアタイルの種類
+UENUM(BlueprintType)
+enum class EFloorTileType : uint8
+{
+    Floor    UMETA(DisplayName = "床"),
+    Soil     UMETA(DisplayName = "土壌"),
+};

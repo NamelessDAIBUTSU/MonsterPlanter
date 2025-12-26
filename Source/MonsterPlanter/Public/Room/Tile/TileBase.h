@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "Room/RoomDef.h"
 #include "TileBase.generated.h"
 
 UCLASS()
@@ -25,7 +26,12 @@ public:
 	void SetTileMaterial(UMaterialInterface* Material);
 
 public:
-	// 壁タイルのメッシュコンポーネント
+	// タイルタイプ
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	EFloorTileType TileType;
+
+private:
+	// 壁タイルのメッシュコンポーネント
+	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<UStaticMeshComponent> MeshComp = nullptr;
 };

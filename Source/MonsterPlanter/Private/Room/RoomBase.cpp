@@ -350,15 +350,11 @@ void ARoomBase::SetupCamera()
 	// カメラマネージャーに登録
 	CameraManager->RegisterCamera(RoomCamera);
 
-	// 指定するタイルの座標（部屋の左下）
-	const int32 TargetX = 0;
-	const int32 TargetY = FMath::Max(0, RoofTileHeight - 1);
-
-	// RoofTiles 配列が行優先で格納されていると仮定：Index = X + Y * Width
-	int32 Index = -1;
+	// 中央下の天井タイルのインデックスを取得
+	int32 TaregtIndex = -1;
 	if (RoofTileWidth > 0 && RoofTiles.Num() > 0)
 	{
-		Index = TargetX + TargetY * RoofTileWidth;
+		TaregtIndex = RoofTileWidth * (RoofTileHeight - 1) + RoofTileWidth / 2;
 	}
 
 	// カメラのワールド位置と回転を計算
@@ -366,17 +362,17 @@ void ARoomBase::SetupCamera()
 	FRotator CameraWorldRotation = FRotator::ZeroRotator;
 
 	// 指定の屋根タイルの下に配置
-	if (RoofTiles.IsValidIndex(Index) && RoofTiles[Index].IsNull() == false)
+	if (RoofTiles.IsValidIndex(TaregtIndex) && RoofTiles[TaregtIndex].IsNull() == false)
 	{
 		// 屋根タイルのワールド位置を取得し、Z 方向に CameraDistanceBelowRoof 分下げる
-		CameraWorldLocation = RoofTiles[Index]->GetActorLocation() - FVector(0.f, 0.f, ROOM_TILE_THICKNESS);
+		CameraWorldLocation = RoofTiles[TaregtIndex]->GetActorLocation() - FVector(0.f, 0.f, ROOM_TILE_THICKNESS * 2.5f);
 		RoomCamera->SetActorLocation(CameraWorldLocation);
 
 		// 部屋の中心座標を計算
 		float CenterX = (RoofTiles[RoofTiles.Num() - 1]->GetActorLocation().X - RoofTiles[0]->GetActorLocation().X) * 0.5f;
 		float CenterY = (RoofTiles[RoofTiles.Num() - 1]->GetActorLocation().Y - RoofTiles[0]->GetActorLocation().Y) * 0.5f;
 		FVector CenterLocation = RoofTiles[0]->GetActorLocation() + FVector(CenterX, CenterY, 0.f);
-		CenterLocation.Z = ROOM_TILE_THICKNESS * 0.5f + LayoutData->RoomHeight * 0.1f;
+		CenterLocation.Z -= ROOM_TILE_THICKNESS * 0.5f + LayoutData->RoomHeight * 1.1f;
 
 		// 視線は部屋中心に向ける
 		CameraWorldRotation = (CenterLocation - RoomCamera->GetActorLocation()).Rotation();
