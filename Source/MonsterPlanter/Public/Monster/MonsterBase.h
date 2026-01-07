@@ -24,10 +24,10 @@ public:
 public:
 	// モンスターデータ
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Monster")
-	TObjectPtr<class UMonsterData> MonsterData = nullptr;
+	TObjectPtr<class UMonsterData> MonsterData;
 
 	// スケルタルメッシュ
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Monster")
-	TObjectPtr<class USkeletalMeshComponent> MonsterMesh = nullptr;
+	TObjectPtr<class USkeletalMeshComponent> MonsterMesh;
 
 };

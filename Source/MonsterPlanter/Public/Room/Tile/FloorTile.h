@@ -31,7 +31,7 @@ public:
 public:
 	// グリッド線用の親コンポーネント
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	TObjectPtr<USceneComponent> GridLineRootComp = nullptr;
+	TObjectPtr<USceneComponent> GridLineRootComp;
 
 	// グリッド線表示用の四辺のメッシュコンポーネント
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)

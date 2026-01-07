@@ -23,11 +23,17 @@ EBTNodeResult::Type UBTTask_SetNextWaypoint::ExecuteTask(UBehaviorTreeComponent&
 	if (Farmland == nullptr)
 		return EBTNodeResult::Failed;
 
-	if(Farmer->GetTargetWaypoint().NextWaypoint == nullptr)
-		return EBTNodeResult::Failed;
+	// 次のウェイポインタインデックス
+	int32 NextIndex = Farmer->GetTargetWaypoint().NextIndex;
+
+	// ウェイポイントリストを取得
+	const auto& WayPoints = Farmland->GetWaypoints();
 
 	// 次のターゲットインデックスを設定
-	Farmer->SetTargetWaypoint(*Farmer->GetTargetWaypoint().NextWaypoint);
+	if (WayPoints.IsValidIndex(NextIndex))
+		return EBTNodeResult::Failed;
+
+	Farmer->SetTargetWaypoint(WayPoints[NextIndex]);
 
     return EBTNodeResult::Succeeded;
 }

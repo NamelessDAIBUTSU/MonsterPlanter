@@ -66,19 +66,19 @@ private:
 public:
 	// 床配置用の親コンポーネント
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	TObjectPtr<USceneComponent> FloorRootComp = nullptr;
+	TObjectPtr<USceneComponent> FloorRootComp;
 
 	// 壁配置用の親コンポーネント
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	TObjectPtr<USceneComponent> WallRootComp = nullptr;
+	TObjectPtr<USceneComponent> WallRootComp;
 
 	// 天井配置用の親コンポーネント
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	TObjectPtr<USceneComponent> RoofRootComp = nullptr;
+	TObjectPtr<USceneComponent> RoofRootComp;
 
 	// 部屋のレイアウト情報
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	TObjectPtr<URoomLayoutData> LayoutData = nullptr;
+	TObjectPtr<URoomLayoutData> LayoutData;
 
 private:
 	// 部屋ID
@@ -113,11 +113,11 @@ private:
 
 	// 前後に繋がっている部屋
 	UPROPERTY()
-	TObjectPtr<ARoomBase> NextRoom = nullptr;
+	TWeakObjectPtr<ARoomBase> NextRoom;
 	UPROPERTY()
-	TObjectPtr<ARoomBase> PreRoom = nullptr;
+	TWeakObjectPtr<ARoomBase> PreRoom;
 
 	// 部屋カメラ
 	UPROPERTY()
-	TObjectPtr<class ARoomCamera> RoomCamera = nullptr;
+	TWeakObjectPtr<class ARoomCamera> RoomCamera;
 };

@@ -33,5 +33,5 @@ public:
 private:
 	// 壁タイルのメッシュコンポーネント
 	UPROPERTY(VisibleAnywhere)
-	TObjectPtr<UStaticMeshComponent> MeshComp = nullptr;
+	TObjectPtr<UStaticMeshComponent> MeshComp;
 };

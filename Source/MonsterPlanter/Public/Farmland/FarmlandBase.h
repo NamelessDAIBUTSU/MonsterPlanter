@@ -43,7 +43,7 @@ private:
 public:
 	// 栽培場のメインメッシュ
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	TObjectPtr<UStaticMeshComponent> MeshComp = nullptr;
+	TObjectPtr<UStaticMeshComponent> MeshComp;
 
 	// 生成する栽培区画の基本クラス
 	UPROPERTY(EditAnywhere)
@@ -86,7 +86,7 @@ protected:
 	TArray<TObjectPtr<AFarmSlotBase>> FarmSlots;
 
 	// 栽培区画のメッシュサイズ
-	FVector SlotMeshExtent = FVector::Zero();
+	FVector SlotMeshExtent = FVector::ZeroVector;
 
 	// 栽培員リスト
 	UPROPERTY(BlueprintReadOnly)

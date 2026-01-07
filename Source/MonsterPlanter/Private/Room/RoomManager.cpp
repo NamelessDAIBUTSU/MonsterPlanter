@@ -72,7 +72,7 @@ void URoomManager::ToggleVisibleGrid()
 {
 	for (ARoomBase* Room : Rooms)
 	{
-		if (Room)
+		if (IsValid(Room))
 		{
 			Room->ToggleVisibleGrid();
 		}

@@ -70,7 +70,7 @@ void ARoomBase::ToggleVisibleGrid()
 {
 	for (AFloorTile* FloorTile : FloorTiles)
 	{
-		if (FloorTile)
+		if (IsValid(FloorTile))
 		{
 			bool bNextVisible = !FloorTile->GetGridLineVisible();
 			FloorTile->SetGridLineVisible(bNextVisible);
@@ -215,7 +215,7 @@ void ARoomBase::SetupWalls()
 // 天井の配置
 void ARoomBase::SetupRoof()
 {
-	if (LayoutData.IsNull() || LayoutData->RoofClass == nullptr)
+	if (IsValid(LayoutData) == false || LayoutData->RoofClass == nullptr)
 		return;
 
 	// 天井の生成
@@ -343,12 +343,13 @@ void ARoomBase::SetupCamera()
 
 
 	// カメラの生成
-	RoomCamera = GetWorld()->SpawnActor<ARoomCamera>();
-	if (RoomCamera == nullptr)
+	ARoomCamera* NewRoomCamera = GetWorld()->SpawnActor<ARoomCamera>();
+	if (NewRoomCamera == nullptr)
 		return;
 
 	// カメラマネージャーに登録
-	CameraManager->RegisterCamera(RoomCamera);
+	RoomCamera = NewRoomCamera;
+	CameraManager->RegisterCamera(RoomCamera.Get());
 
 	// 中央下の天井タイルのインデックスを取得
 	int32 TaregtIndex = -1;
@@ -362,7 +363,7 @@ void ARoomBase::SetupCamera()
 	FRotator CameraWorldRotation = FRotator::ZeroRotator;
 
 	// 指定の屋根タイルの下に配置
-	if (RoofTiles.IsValidIndex(TaregtIndex) && RoofTiles[TaregtIndex].IsNull() == false)
+	if (RoofTiles.IsValidIndex(TaregtIndex) && IsValid(RoofTiles[TaregtIndex]))
 	{
 		// 屋根タイルのワールド位置を取得し、Z 方向に CameraDistanceBelowRoof 分下げる
 		CameraWorldLocation = RoofTiles[TaregtIndex]->GetActorLocation() - FVector(0.f, 0.f, ROOM_TILE_THICKNESS * 2.5f);

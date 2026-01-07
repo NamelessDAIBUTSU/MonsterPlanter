@@ -48,5 +48,5 @@ private:
 
 	// 現在の部屋
 	UPROPERTY()
-	TObjectPtr<ARoomBase> CurrentRoom;
+	TWeakObjectPtr<ARoomBase> CurrentRoom;
 };

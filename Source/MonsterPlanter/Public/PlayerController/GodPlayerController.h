@@ -38,13 +38,13 @@ private:
 public:
 	// 入力処理関連
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
-	class UInputMappingContext* IMC = nullptr;
+	TObjectPtr<class UInputMappingContext> IMC;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
-	class UInputAction* IAGodCamera = nullptr;
+	TObjectPtr<class UInputAction> IAGodCamera;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
-	class UInputAction* IARoomCamera = nullptr;
+	TObjectPtr<class UInputAction> IARoomCamera;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
-	class UInputAction* IAToggleVisibleGrid = nullptr;
+	TObjectPtr<class UInputAction> IAToggleVisibleGrid;
 
 private:
 	// 現在のカメラチャンネル

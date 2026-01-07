@@ -44,7 +44,7 @@ public:
 
 private:
 	// 現在のカメラ
-	TObjectPtr<AIngameCameraBase> CurrentCamera;
+	TWeakObjectPtr<AIngameCameraBase> CurrentCamera;
 
 	// 登録されたカメラのリスト
 	TArray<TObjectPtr<AIngameCameraBase>> CameraList;

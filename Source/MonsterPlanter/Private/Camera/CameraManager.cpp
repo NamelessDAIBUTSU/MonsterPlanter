@@ -65,7 +65,7 @@ AIngameCameraBase* UCameraManager::GetCamera(ECameraChannel Cannel)
 // 現在のカメラを取得
 AIngameCameraBase* UCameraManager::GetCurrentCamera() const
 {
-	return CurrentCamera;
+	return CurrentCamera.Get();
 }
 // 現在のカメラを設定
 void UCameraManager::SetCurrentCamera(AIngameCameraBase* NewCamera)

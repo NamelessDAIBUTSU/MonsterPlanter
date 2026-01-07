@@ -41,7 +41,7 @@ public:
 private:
 	// 栽培区画のメインメッシュ
 	UPROPERTY(VisibleAnywhere)
-	TObjectPtr<UStaticMeshComponent> MeshComp = nullptr;
+	TObjectPtr<UStaticMeshComponent> MeshComp;
 
 	// 区画サイズ
 	UPROPERTY(VisibleAnywhere)

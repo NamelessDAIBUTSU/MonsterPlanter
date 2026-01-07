@@ -33,7 +33,7 @@ public:
 	const FWaypoint& GetTargetWaypoint() const { return TargetWaypoint; }
 
 	// 配属された栽培場の取得
-	AFarmlandBase* GetAssignedFarmland() const { return AssignedFarmland; }
+	AFarmlandBase* GetAssignedFarmland() const { return AssignedFarmland.Get(); }
 
 public:
 	// 周回速度
@@ -51,5 +51,5 @@ private:
 
 	// 配属された栽培場
 	UPROPERTY()
-	TObjectPtr<AFarmlandBase> AssignedFarmland = nullptr;
+	TWeakObjectPtr<AFarmlandBase> AssignedFarmland;
 };

@@ -155,25 +155,25 @@ void AFarmlandBase::CreateWaypoints()
 		// 左上 → 左下
 		if (i == 0)
 		{
-			Waypoints[i].NextWaypoint = &Waypoints[2];
+			Waypoints[i].NextIndex = 2;
 		}
 
 		// 右上 → 左上
 		if (i == 1)
 		{
-			Waypoints[i].NextWaypoint = &Waypoints[0];
+			Waypoints[i].NextIndex = 0;
 		}
 
 		// 左下 → 右下
 		if (i == 2)
 		{
-			Waypoints[i].NextWaypoint = &Waypoints[3];
+			Waypoints[i].NextIndex = 3;
 		}
 
 		// 右下 → 右上
 		if (i == 3)
 		{
-			Waypoints[i].NextWaypoint = &Waypoints[1];
+			Waypoints[i].NextIndex = 1;
 		}
 	}
 }
