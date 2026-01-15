@@ -75,6 +75,12 @@ void AFloorTile::Tick(float DeltaTime)
 // グリッド線の表示・非表示
 void AFloorTile::SetGridLineVisible(bool bVisible)
 {
+	if (TileType == EFloorTileType::Soil)
+	{
+		GridLineRootComp->SetVisibility(false, true);
+		return;
+	}
+
 	if (GridLineRootComp)
 	{
 		GridLineRootComp->SetVisibility(bVisible, true);
