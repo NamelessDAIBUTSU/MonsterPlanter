@@ -44,19 +44,19 @@ void AFloorTile::OnConstruction(const FTransform& Transform)
 	// グリッド線のメッシュコンポーネントを配置
 	float GridLineXYOffset = ROOM_TILE_SIZE * 0.5f + GRID_LINE_THICKNESS * 0.5f;
 	float GridLineZOffset = ROOM_TILE_THICKNESS * 0.5f + GRID_LINE_THICKNESS * 0.5f;
-	float GridLineScale = 0.05f;
+	float GridLineScale = 0.02f;
 	// 上辺
 	GridLineMeshComps[0]->SetRelativeLocation(FVector(GridLineXYOffset, 0.f, GridLineZOffset));
-	GridLineMeshComps[0]->SetRelativeScale3D(FVector(GridLineScale, 2.f, GridLineScale));
+	GridLineMeshComps[0]->SetRelativeScale3D(FVector(GridLineScale, 1.f, GridLineScale));
 	// 右辺
 	GridLineMeshComps[1]->SetRelativeLocation(FVector(0.f, GridLineXYOffset, GridLineZOffset));
-	GridLineMeshComps[1]->SetRelativeScale3D(FVector(2.f, GridLineScale, GridLineScale));
+	GridLineMeshComps[1]->SetRelativeScale3D(FVector(1.f, GridLineScale, GridLineScale));
 	// 下辺
 	GridLineMeshComps[2]->SetRelativeLocation(FVector(GridLineXYOffset * -1.f, 0.f, GridLineZOffset));
-	GridLineMeshComps[2]->SetRelativeScale3D(FVector(GridLineScale, 2.f, GridLineScale));
+	GridLineMeshComps[2]->SetRelativeScale3D(FVector(GridLineScale, 1.f, GridLineScale));
 	// 左辺
 	GridLineMeshComps[3]->SetRelativeLocation(FVector(0.f, GridLineXYOffset * -1.f, GridLineZOffset));
-	GridLineMeshComps[3]->SetRelativeScale3D(FVector(2.f, GridLineScale, GridLineScale));
+	GridLineMeshComps[3]->SetRelativeScale3D(FVector(1.f, GridLineScale, GridLineScale));
 
 
 }

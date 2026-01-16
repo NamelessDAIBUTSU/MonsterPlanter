@@ -4,11 +4,11 @@
 #include "RoomDef.generated.h"
 
 // 部屋のタイルサイズ(1辺)
-#define ROOM_TILE_SIZE 200
+#define ROOM_TILE_SIZE 100
 // 部屋のタイルの厚さ
-#define ROOM_TILE_THICKNESS 100
+#define ROOM_TILE_THICKNESS 50
 // グリッド線の厚さ
-#define GRID_LINE_THICKNESS 5
+#define GRID_LINE_THICKNESS 2
 
 // 部屋のサイズ1辺の最大cm(200 * 20タイル)
 #define MAX_ROOM_SIZE 4000
