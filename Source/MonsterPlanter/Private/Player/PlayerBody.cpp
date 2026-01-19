@@ -6,6 +6,8 @@
 #include "Camera/CameraComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include <Player/PlayerAstral.h>
+#include <Player/PlayerGhost.h>
 
 // Sets default values
 APlayerBody::APlayerBody()
@@ -59,28 +61,10 @@ void APlayerBody::Tick(float DeltaTime)
 void APlayerBody::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
-
-	if (UEnhancedInputComponent* EIC = Cast<UEnhancedInputComponent>(PlayerInputComponent))
-	{
-		EIC->BindAction(IA_Move, ETriggerEvent::Triggered, this, &APlayerBody::Move);
-	}
-
 }
 
-void APlayerBody::Move(const FInputActionValue& Value)
+// 軌道の保存
+void APlayerBody::SetOrbitPoints(const TArray<FTransform>& Points)
 {
-	const FVector2D InputAxis = Value.Get<FVector2D>();
-
-	if (Controller)
-	{
-		const FRotator Rotation = Controller->GetControlRotation();
-		const FRotator YawRotation(0.f, Rotation.Yaw, 0.f);
-
-		const FVector ForwardDir = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X);
-		const FVector RightDir = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
-
-
-		AddMovementInput(ForwardDir, InputAxis.X);
-		AddMovementInput(RightDir, InputAxis.Y);
-	}
+	OrbitPoints.Add(Points);
 }

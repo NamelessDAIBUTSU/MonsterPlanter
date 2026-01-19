@@ -1,6 +1,7 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 
+#include "Player/PlayerAstral.h"
 #include "Player/PlayerBody.h"
 #include <EnhancedInputComponent.h>
 #include "Camera/CameraComponent.h"
@@ -8,9 +9,9 @@
 #include "GameFramework/CharacterMovementComponent.h"
 
 // Sets default values
-APlayerBody::APlayerBody()
+APlayerAstral::APlayerAstral()
 {
- 	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
+	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 	PrimaryActorTick.bStartWithTickEnabled = true;
 
@@ -36,51 +37,58 @@ APlayerBody::APlayerBody()
 	TopDownCameraComponent = CreateDefaultSubobject<UCameraComponent>(TEXT("TopDownCamera"));
 	TopDownCameraComponent->SetupAttachment(CameraBoom, USpringArmComponent::SocketName);
 	TopDownCameraComponent->bUsePawnControlRotation = false; // Camera does not rotate relative to arm
-
-	UE_LOG(LogTemp, Warning, TEXT("APlayerBody::APlayerBody() Pawn spawned at: %s"), *GetActorLocation().ToString());
 }
 
 // Called when the game starts or when spawned
-void APlayerBody::BeginPlay()
+void APlayerAstral::BeginPlay()
 {
 	Super::BeginPlay();
+	
+}
 
-	UE_LOG(LogTemp, Warning, TEXT("APlayerBody::BeginPlay() Pawn spawned at: %s"), *GetActorLocation().ToString());
+// Destroy時に軌道を本体に渡す
+void APlayerAstral::EndPlay(const EEndPlayReason::Type EndPlayReason)
+{
+	Super::EndPlay(EndPlayReason);
+
+	if (PlayerBody.IsValid())
+	{
+		PlayerBody->SetOrbitPoints(OrbitPoints);
+	}
 }
 
 // Called every frame
-void APlayerBody::Tick(float DeltaTime)
+void APlayerAstral::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	ElapsedSec += DeltaTime;
+
+	// 軌道保存
+	if (ElapsedSec >= OrbitSaveInterval)
+	{
+		OrbitPoints.Add(GetActorTransform());
+		
+		ElapsedSec = 0.f;
+	}
 }
 
 // Called to bind functionality to input
-void APlayerBody::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
+void APlayerAstral::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
-	if (UEnhancedInputComponent* EIC = Cast<UEnhancedInputComponent>(PlayerInputComponent))
-	{
-		EIC->BindAction(IA_Move, ETriggerEvent::Triggered, this, &APlayerBody::Move);
-	}
-
 }
 
-void APlayerBody::Move(const FInputActionValue& Value)
+// 幽体離脱した本体の設定
+void APlayerAstral::SetBody(APlayerBody* Body) 
 {
-	const FVector2D InputAxis = Value.Get<FVector2D>();
-
-	if (Controller)
-	{
-		const FRotator Rotation = Controller->GetControlRotation();
-		const FRotator YawRotation(0.f, Rotation.Yaw, 0.f);
-
-		const FVector ForwardDir = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X);
-		const FVector RightDir = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
-
-
-		AddMovementInput(GetActorForwardVector(), InputAxis.X);
-		AddMovementInput(GetActorRightVector(), InputAxis.Y);
-	}
+	PlayerBody = Body; 
 }
+
+APlayerBody* APlayerAstral::GetBody() 
+{
+	return PlayerBody.Get(); 
+}
+
+
