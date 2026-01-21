@@ -7,6 +7,9 @@
 #include "InputActionValue.h"
 #include "PlayerBody.generated.h"
 
+class APlayerGhost;
+class UGhostManagerComponent;
+
 UCLASS()
 class MONSTERPLANTER_API APlayerBody : public ACharacter
 {
@@ -28,6 +31,9 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 public:
+	// ゴースト管理コンポーネントの取得
+	UGhostManagerComponent* GetGhostManagerComponent() const { return GhostManagerComp; }
+
 	// 軌道の保存
 	void SetOrbitPoints(const TArray<FTransform>& Points);
 	TArray<TArray<FTransform>> GetOrbitPoints() const { return OrbitPoints; }
@@ -35,12 +41,14 @@ public:
 private:
 	/** Top down camera */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
-	class UCameraComponent* TopDownCameraComponent;
-
+	TObjectPtr<class UCameraComponent> CameraComp;
 	/** Camera boom positioning the camera above the character */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
-	class USpringArmComponent* CameraBoom;
+	TObjectPtr<class USpringArmComponent> SpringArmComp;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<UGhostManagerComponent> GhostManagerComp;
 
 	// 保存した軌道
 	TArray<TArray<FTransform>> OrbitPoints;
+
 };

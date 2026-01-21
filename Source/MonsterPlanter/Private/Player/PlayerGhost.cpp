@@ -46,6 +46,14 @@ void APlayerGhost::BeginPlay()
 {
 	Super::BeginPlay();
 	
+
+}
+
+void APlayerGhost::EndPlay(const EEndPlayReason::Type EndPlayReason)
+{
+	Super::EndPlay(EndPlayReason);
+
+
 }
 
 // Called every frame
@@ -62,8 +70,8 @@ void APlayerGhost::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
-}
 
+}
 
 // 幽体離脱した本体の設定
 void APlayerGhost::SetBody(APlayerBody* Body)

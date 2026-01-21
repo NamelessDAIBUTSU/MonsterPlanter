@@ -2,12 +2,13 @@
 
 
 #include "Player/PlayerBody.h"
+#include "Player/PlayerGhost.h"
+#include <Player/PlayerAstral.h>
 #include <EnhancedInputComponent.h>
 #include "Camera/CameraComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
-#include <Player/PlayerAstral.h>
-#include <Player/PlayerGhost.h>
+#include "Ghost/GhostManagerComponent.h"
 
 // Sets default values
 APlayerBody::APlayerBody()
@@ -27,17 +28,19 @@ APlayerBody::APlayerBody()
 	GetCharacterMovement()->bSnapToPlaneAtStart = true;
 
 	// Create a camera boom...
-	CameraBoom = CreateDefaultSubobject<USpringArmComponent>(TEXT("CameraBoom"));
-	CameraBoom->SetupAttachment(RootComponent);
-	CameraBoom->SetUsingAbsoluteRotation(true); // Don't want arm to rotate when character does
-	CameraBoom->TargetArmLength = 800.f;
-	CameraBoom->SetRelativeRotation(FRotator(-60.f, 0.f, 0.f));
-	CameraBoom->bDoCollisionTest = false; // Don't want to pull camera in when it collides with level
+	SpringArmComp = CreateDefaultSubobject<USpringArmComponent>(TEXT("CameraBoom"));
+	SpringArmComp->SetupAttachment(RootComponent);
+	SpringArmComp->SetUsingAbsoluteRotation(true); // Don't want arm to rotate when character does
+	SpringArmComp->TargetArmLength = 800.f;
+	SpringArmComp->SetRelativeRotation(FRotator(-60.f, 0.f, 0.f));
+	SpringArmComp->bDoCollisionTest = false; // Don't want to pull camera in when it collides with level
 
 	// Create a camera...
-	TopDownCameraComponent = CreateDefaultSubobject<UCameraComponent>(TEXT("TopDownCamera"));
-	TopDownCameraComponent->SetupAttachment(CameraBoom, USpringArmComponent::SocketName);
-	TopDownCameraComponent->bUsePawnControlRotation = false; // Camera does not rotate relative to arm
+	CameraComp = CreateDefaultSubobject<UCameraComponent>(TEXT("TopDownCamera"));
+	CameraComp->SetupAttachment(SpringArmComp, USpringArmComponent::SocketName);
+	CameraComp->bUsePawnControlRotation = false; // Camera does not rotate relative to arm
+
+	GhostManagerComp = CreateDefaultSubobject<UGhostManagerComponent>(TEXT("GhostManager"));
 
 	UE_LOG(LogTemp, Warning, TEXT("APlayerBody::APlayerBody() Pawn spawned at: %s"), *GetActorLocation().ToString());
 }
@@ -68,3 +71,4 @@ void APlayerBody::SetOrbitPoints(const TArray<FTransform>& Points)
 {
 	OrbitPoints.Add(Points);
 }
+

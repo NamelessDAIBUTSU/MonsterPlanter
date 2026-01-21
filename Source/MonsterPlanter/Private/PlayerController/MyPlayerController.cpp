@@ -5,6 +5,7 @@
 #include <Player/PlayerBody.h>
 #include <Player/PlayerAstral.h>
 #include <Player/PlayerGhost.h>
+#include "Ghost/GhostManagerComponent.h"
 
 AMyPlayerController::AMyPlayerController()
 {
@@ -100,15 +101,24 @@ void AMyPlayerController::SpawnGhost()
 	APlayerBody* Body = Cast<APlayerBody>(GetPawn());
 	if (Body == nullptr)
 		return;
+	UGhostManagerComponent* GhostManComp = Body->GetGhostManagerComponent();
+	if (GhostManComp == nullptr)
+		return;
+
+	// ゴーストの全削除
+	GhostManComp->ClearGhosts();
 
 	// 軌道の数だけゴーストを生成
-	for (TArray<FTransform> Orbit : Body->GetOrbitPoints())
+	FActorSpawnParameters Params;
+	Params.SpawnCollisionHandlingOverride =
+		ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+	for (const TArray<FTransform>& Orbit : Body->GetOrbitPoints())
 	{
 		if (Orbit.IsEmpty())
 			continue;
 
 		// ゴーストの生成
-		APlayerGhost* Ghost = GetWorld()->SpawnActor<APlayerGhost>(GhostClass, Orbit[0].GetLocation(), Orbit[0].GetRotation().Rotator());
+		APlayerGhost* Ghost = GetWorld()->SpawnActor<APlayerGhost>(GhostClass, Orbit[0].GetLocation(), Orbit[0].GetRotation().Rotator(), Params);
 		if (Ghost == nullptr)
 			return;
 
@@ -117,6 +127,9 @@ void AMyPlayerController::SpawnGhost()
 
 		// 本体の登録
 		Ghost->SetBody(Body);
+
+		// ゴーストの登録
+		GhostManComp->AddGhost(Ghost);
 	}
 }
 
