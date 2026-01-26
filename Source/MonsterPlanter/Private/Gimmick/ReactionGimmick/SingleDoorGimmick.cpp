@@ -46,7 +46,6 @@ void ASingleDoorGimmick::BeginPlay()
 			UpdateFunc.BindUFunction(this, FName("OnTimelineUpdate"));
 
 			OpenTimeline->AddInterpFloat(OpenCurve, UpdateFunc);
-			OpenTimeline->SetLooping(false);
 		}
 	}
 }
@@ -65,7 +64,4 @@ void ASingleDoorGimmick::OnTimelineUpdate(float Value)
 {
 	FVector NewLocation = FMath::Lerp(ClosedLocation, OpenedLocation, Value);
 	DoorMesh->SetRelativeLocation(NewLocation);
-
-	// ログ出力（デバッグ用）
-	UE_LOG(LogTemp, Log, TEXT("Timeline Value: %f, New Location: %s"), Value, *NewLocation.ToString());
 }
