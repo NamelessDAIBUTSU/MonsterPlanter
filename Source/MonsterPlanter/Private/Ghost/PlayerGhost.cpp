@@ -1,7 +1,7 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "Player/PlayerGhost.h"
+#include "Ghost/PlayerGhost.h"
 #include "Player/PlayerBody.h"
 #include <EnhancedInputComponent.h>
 #include "GameFramework/PawnMovementComponent.h"
@@ -84,12 +84,34 @@ APlayerBody* APlayerGhost::GetBody()
 	return PlayerBody.Get();
 }
 
+void APlayerGhost::OnTimerDestroy()
+{
+	Destroy();
+}
+
 
 // 移動更新
 void APlayerGhost::UpdateMove(float DeltaTime)
 {
-	if (OrbitPoints.IsEmpty() || OrbitPoints.IsValidIndex(CurrentOrbitIndex) == false)
+	if (bIsMoveFinished)
 		return;
+
+	if (OrbitPoints.IsEmpty() || OrbitPoints.IsValidIndex(CurrentOrbitIndex) == false)
+	{
+		bIsMoveFinished = true;
+
+		// 移動完了したら、時間計測して一定時間経過後に消滅させる
+		GetWorldTimerManager().SetTimer(
+			DestroyTimerHandle,
+			this,
+			&APlayerGhost::OnTimerDestroy,
+			DeleteSec,
+			false
+		);
+
+		return;
+	}
+
 
 	// 現在の目標地点
 	const FTransform& TargetTransform = OrbitPoints[CurrentOrbitIndex];

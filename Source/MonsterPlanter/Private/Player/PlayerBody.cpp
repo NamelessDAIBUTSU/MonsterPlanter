@@ -2,8 +2,8 @@
 
 
 #include "Player/PlayerBody.h"
-#include "Player/PlayerGhost.h"
-#include <Player/PlayerAstral.h>
+#include "Ghost/PlayerGhost.h"
+#include <Astral/PlayerAstral.h>
 #include <EnhancedInputComponent.h>
 #include "Camera/CameraComponent.h"
 #include "GameFramework/SpringArmComponent.h"

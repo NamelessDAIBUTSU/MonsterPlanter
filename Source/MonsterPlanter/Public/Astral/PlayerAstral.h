@@ -4,23 +4,24 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
-#include "PlayerGhost.generated.h"
+#include "InputActionValue.h"
+#include "PlayerAstral.generated.h"
 
 class APlayerBody;
 
 UCLASS()
-class MONSTERPLANTER_API APlayerGhost : public ACharacter
+class MONSTERPLANTER_API APlayerAstral : public ACharacter
 {
 	GENERATED_BODY()
 
 public:
 	// Sets default values for this character's properties
-	APlayerGhost();
+	APlayerAstral();
 
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
-	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason);
+	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 
 public:	
 	// Called every frame
@@ -34,26 +35,23 @@ public:
 	void SetBody(APlayerBody* Body);
 	APlayerBody* GetBody();
 
-	void SetOrbitPoints(const TArray<FTransform>& Points) { OrbitPoints = Points; }
-
 private:
-	// 移動更新
-	void UpdateMove(float DeltaTime);
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
+	class UCameraComponent* TopDownCameraComponent;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
+	class USpringArmComponent* CameraBoom;
 
 private:
 	// 本体への参照
 	TWeakObjectPtr<APlayerBody> PlayerBody;
 
-	/** Top down camera */
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
-	class UCameraComponent* TopDownCameraComponent;
-
-	/** Camera boom positioning the camera above the character */
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
-	class USpringArmComponent* CameraBoom;
-
-	// 移動予定軌跡
+	// 軌道保存
 	TArray<FTransform> OrbitPoints;
-	// 現在の軌跡インデックス
-	int32 CurrentOrbitIndex = 0;
+
+	// 軌道保存間隔(s)
+	float OrbitSaveInterval = 0.05f;
+
+	// 経過時間
+	float ElapsedSec = 0.f;
 };

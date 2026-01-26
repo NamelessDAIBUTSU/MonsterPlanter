@@ -25,6 +25,8 @@ public:
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
 public:
+	// ゴーストの生成
+
 	// ゴーストの追加
 	void AddGhost(class APlayerGhost* Ghost);
 	TArray<TObjectPtr<class APlayerGhost>> GetGhosts() const { return Ghosts; }
@@ -34,4 +36,8 @@ public:
 private:
 	UPROPERTY(VisibleAnywhere)
 	TArray<TObjectPtr<class APlayerGhost>> Ghosts;
+
+	// 現在の生成可能ゴースト数
+	UPROPERTY(VisibleAnywhere)
+	int32 CurrentMaxSpawnNum = 1;
 };

@@ -5,13 +5,14 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
 #include "InputActionValue.h"
+#include "Interface/Weighted.h"
 #include "PlayerBody.generated.h"
 
 class APlayerGhost;
 class UGhostManagerComponent;
 
 UCLASS()
-class MONSTERPLANTER_API APlayerBody : public ACharacter
+class MONSTERPLANTER_API APlayerBody : public ACharacter, public IWeighted
 {
 	GENERATED_BODY()
 
@@ -30,6 +31,9 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+public: /* IWeighted */
+	virtual float GetWeight() const override { return 1.0f; }
+
 public:
 	// ゴースト管理コンポーネントの取得
 	UGhostManagerComponent* GetGhostManagerComponent() const { return GhostManagerComp; }
@@ -39,10 +43,8 @@ public:
 	TArray<TArray<FTransform>> GetOrbitPoints() const { return OrbitPoints; }
 
 private:
-	/** Top down camera */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<class UCameraComponent> CameraComp;
-	/** Camera boom positioning the camera above the character */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<class USpringArmComponent> SpringArmComp;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))

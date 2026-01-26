@@ -3,8 +3,8 @@
 #include <EnhancedInputSubsystems.h>
 #include <EnhancedInputComponent.h>
 #include <Player/PlayerBody.h>
-#include <Player/PlayerAstral.h>
-#include <Player/PlayerGhost.h>
+#include <Astral/PlayerAstral.h>
+#include <Ghost/PlayerGhost.h>
 #include "Ghost/GhostManagerComponent.h"
 
 AMyPlayerController::AMyPlayerController()
@@ -60,6 +60,13 @@ void AMyPlayerController::ChangeToAstralMode()
 	APlayerBody* Body =  Cast<APlayerBody>(GetPawn());
 	if (Body == nullptr)
 		return;
+
+	UGhostManagerComponent* GhostManComp = Body->GetGhostManagerComponent();
+	if (GhostManComp == nullptr)
+		return;
+
+	// ゴーストの全削除
+	GhostManComp->ClearGhosts();
 
 	// アストラルの生成
 	APlayerAstral* Astral = GetWorld()->SpawnActor<APlayerAstral>(AstralClass, Body->GetActorLocation(), Body->GetActorRotation());

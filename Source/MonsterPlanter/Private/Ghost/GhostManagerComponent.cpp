@@ -2,7 +2,7 @@
 
 
 #include "Ghost/GhostManagerComponent.h"
-#include "Player/PlayerGhost.h"
+#include "Ghost/PlayerGhost.h"
 
 // Sets default values for this component's properties
 UGhostManagerComponent::UGhostManagerComponent()
@@ -44,7 +44,10 @@ void UGhostManagerComponent::ClearGhosts()
 	// ワールドから削除
 	for (APlayerGhost* Ghost : Ghosts)
 	{
-		Ghost->Destroy();
+		if (Ghost)
+		{
+			Ghost->Destroy();
+		}
 	}
 
 	// リストから削除
