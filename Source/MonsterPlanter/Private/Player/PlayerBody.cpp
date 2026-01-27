@@ -31,12 +31,12 @@ APlayerBody::APlayerBody()
 	SpringArmComp = CreateDefaultSubobject<USpringArmComponent>(TEXT("CameraBoom"));
 	SpringArmComp->SetupAttachment(RootComponent);
 	SpringArmComp->SetUsingAbsoluteRotation(true); // Don't want arm to rotate when character does
-	SpringArmComp->TargetArmLength = 800.f;
-	SpringArmComp->SetRelativeRotation(FRotator(-60.f, 0.f, 0.f));
+	SpringArmComp->TargetArmLength = 600.f;
+	SpringArmComp->SetRelativeRotation(FRotator(-45.f, 0.f, 0.f));
 	SpringArmComp->bDoCollisionTest = false; // Don't want to pull camera in when it collides with level
 
 	// Create a camera...
-	CameraComp = CreateDefaultSubobject<UCameraComponent>(TEXT("TopDownCamera"));
+	CameraComp = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
 	CameraComp->SetupAttachment(SpringArmComp, USpringArmComponent::SocketName);
 	CameraComp->bUsePawnControlRotation = false; // Camera does not rotate relative to arm
 

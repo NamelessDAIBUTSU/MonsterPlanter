@@ -18,13 +18,23 @@ ATileBase::ATileBase()
 	BoxComp->SetCollisionObjectType(ECollisionChannel::ECC_WorldStatic);
 	BoxComp->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
 	BoxComp->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Ignore);
-	BoxComp->SetCollisionResponseToChannel(ECollisionChannel::ECC_Pawn, ECollisionResponse::ECR_Block);
+	BoxComp->SetCollisionResponseToChannel(ECollisionChannel::ECC_GameTraceChannel1, ECollisionResponse::ECR_Block);
+	BoxComp->SetCollisionResponseToChannel(ECollisionChannel::ECC_GameTraceChannel2, ECollisionResponse::ECR_Block);
 }
 
 void ATileBase::BeginPlay()
 {
 	Super::BeginPlay();
 	
+	// メッシュの初期設定
+	if (MeshComp)
+	{
+		// メッシュのコリジョンを無効化
+		MeshComp->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	}
+
+	// コリジョンの初期設定
+	SetupCollisionFromMesh();
 }
 
 void ATileBase::OnConstruction(const FTransform& Transform)
@@ -65,19 +75,14 @@ void ATileBase::SetupCollisionFromMesh()
     // BoxExtent は「半サイズ」
     FVector BoxExtent = Bounds.BoxExtent;
 
-    // メッシュの中心（ピボット補正）
     const FVector LocalCenter = Bounds.Origin;
 
     // Meshの相対Transformを反映
     const FVector MeshScale = MeshComp->GetRelativeScale3D();
 
-    BoxComp->SetRelativeLocation(
-        MeshComp->GetRelativeLocation() + LocalCenter
-    );
+	BoxComp->SetRelativeLocation(MeshComp->GetRelativeLocation() + LocalCenter);
 
-    BoxComp->SetRelativeRotation(
-        MeshComp->GetRelativeRotation()
-    );
+	BoxComp->SetRelativeRotation(MeshComp->GetRelativeRotation());
 
     BoxComp->SetBoxExtent(BoxExtent * MeshScale);
 }
