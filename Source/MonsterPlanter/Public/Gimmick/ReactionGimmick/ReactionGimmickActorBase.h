@@ -28,4 +28,6 @@ public:
 public:
 	// ギミック起動
 	virtual void ActivateGimmick() {};
+	// ギミック停止
+	virtual void DeactivateGimmick() {};
 };

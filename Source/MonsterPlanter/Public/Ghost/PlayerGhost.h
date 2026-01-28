@@ -31,7 +31,7 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 public: /* IWeighted */
-	virtual float GetWeight() const override { return 1.0f; }
+	virtual float GetWeight() const override { return 10.0f; }
 
 public:
 	// 幽体離脱した本体の設定

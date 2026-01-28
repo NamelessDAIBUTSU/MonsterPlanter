@@ -59,6 +59,15 @@ void ASingleDoorGimmick::ActivateGimmick()
 	}
 }
 
+void ASingleDoorGimmick::DeactivateGimmick()
+{
+	// タイムライン停止
+	if (OpenTimeline)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      
+	{
+		OpenTimeline->Reverse();
+	}
+}
+
 // タイムライン更新処理
 void ASingleDoorGimmick::OnTimelineUpdate(float Value)
 {

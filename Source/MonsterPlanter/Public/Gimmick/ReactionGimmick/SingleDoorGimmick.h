@@ -27,6 +27,8 @@ protected:
 public: /* AReactionGimmickActorBase */
 	// ギミック起動
 	virtual void ActivateGimmick() override;
+	// ギミック停止
+	virtual void DeactivateGimmick() override;
 
 public:
 	// タイムライン更新処理
