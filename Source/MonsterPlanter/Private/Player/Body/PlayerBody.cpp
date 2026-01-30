@@ -1,19 +1,20 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "Player/PlayerBody.h"
-#include "Ghost/PlayerGhost.h"
-#include <Astral/PlayerAstral.h>
+#include "Player/Body/PlayerBody.h"
+#include "Player/Ghost/PlayerGhost.h"
+#include <Player/Astral/PlayerAstral.h>
 #include <EnhancedInputComponent.h>
 #include "Camera/CameraComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
-#include "Ghost/GhostManagerComponent.h"
+#include "Player/Ghost/GhostManagerComponent.h"
 
 // Sets default values
 APlayerBody::APlayerBody()
 {
 	PrimaryActorTick.bCanEverTick = true;
+
 	PrimaryActorTick.bStartWithTickEnabled = true;
 
 	bUseControllerRotationPitch = false;

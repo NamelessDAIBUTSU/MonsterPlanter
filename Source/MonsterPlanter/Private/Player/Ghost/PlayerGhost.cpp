@@ -1,8 +1,8 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "Ghost/PlayerGhost.h"
-#include "Player/PlayerBody.h"
+#include "Player/Ghost/PlayerGhost.h"
+#include "Player/Body/PlayerBody.h"
 #include <EnhancedInputComponent.h>
 #include "GameFramework/PawnMovementComponent.h"
 #include "Camera/CameraComponent.h"

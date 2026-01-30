@@ -2,10 +2,10 @@
 #include "PlayerController/MyPlayerController.h"
 #include <EnhancedInputSubsystems.h>
 #include <EnhancedInputComponent.h>
-#include <Player/PlayerBody.h>
-#include <Astral/PlayerAstral.h>
-#include <Ghost/PlayerGhost.h>
-#include "Ghost/GhostManagerComponent.h"
+#include <Player/Body/PlayerBody.h>
+#include <Player/Astral/PlayerAstral.h>
+#include <Player/Ghost/PlayerGhost.h>
+#include "Player/Ghost/GhostManagerComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 
 AMyPlayerController::AMyPlayerController()

@@ -1,8 +1,8 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "Astral/PlayerAstral.h"
-#include "Player/PlayerBody.h"
+#include "Player/Astral/PlayerAstral.h"
+#include "Player/Body/PlayerBody.h"
 #include <EnhancedInputComponent.h>
 #include "Camera/CameraComponent.h"
 #include "GameFramework/SpringArmComponent.h"

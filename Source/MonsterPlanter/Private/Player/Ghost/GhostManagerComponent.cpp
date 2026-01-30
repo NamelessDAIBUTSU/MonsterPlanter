@@ -1,8 +1,8 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "Ghost/GhostManagerComponent.h"
-#include "Ghost/PlayerGhost.h"
+#include "Player/Ghost/GhostManagerComponent.h"
+#include "Player/Ghost/PlayerGhost.h"
 
 // Sets default values for this component's properties
 UGhostManagerComponent::UGhostManagerComponent()
