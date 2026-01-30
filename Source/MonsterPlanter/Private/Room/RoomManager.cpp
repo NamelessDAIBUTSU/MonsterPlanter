@@ -66,15 +66,3 @@ void URoomManager::AddRoom(ARoomBase* NewRoom)
 
 	Rooms.Add(NewRoom);
 }
-
-// グリッド線の表示切替
-void URoomManager::ToggleVisibleGrid()
-{
-	for (ARoomBase* Room : Rooms)
-	{
-		if (IsValid(Room))
-		{
-			Room->ToggleVisibleGrid();
-		}
-	}
-}

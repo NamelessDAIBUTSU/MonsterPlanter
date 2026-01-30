@@ -34,9 +34,6 @@ public:
 	// 部屋の追加
 	void AddRoom(ARoomBase* NewRoom);
 
-	// グリッド線の表示切替
-	void ToggleVisibleGrid();
-
 private:
 	// 部屋クラスマップ
 	UPROPERTY()

@@ -30,9 +30,6 @@ public:
 	int32 GetRoomID() const { return RoomID; }
 	void SetRoomID(int32 Id) { RoomID = Id; }
 
-	// グリッド線の表示切替
-	void ToggleVisibleGrid();
-
 protected:
 	// 部屋毎の専用初期化
 	virtual void InitializeRoom() {}

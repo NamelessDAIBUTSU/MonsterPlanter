@@ -65,19 +65,6 @@ void ARoomBase::SetupRoomLayout()
 	InitializeRoom();
 }
 
-// グリッド線の表示切替
-void ARoomBase::ToggleVisibleGrid()
-{
-	for (AFloorTile* FloorTile : FloorTiles)
-	{
-		if (IsValid(FloorTile))
-		{
-			bool bNextVisible = !FloorTile->GetGridLineVisible();
-			FloorTile->SetGridLineVisible(bNextVisible);
-		}
-	}
-}
-
 // 床の配置
 void ARoomBase::SetupFloor()
 {

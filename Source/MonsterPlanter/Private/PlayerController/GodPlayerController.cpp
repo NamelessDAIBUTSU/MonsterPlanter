@@ -54,7 +54,6 @@ void AGodPlayerController::SetupInputComponent()
 		// カメラ切り替え
 		EIC->BindAction(IAGodCamera, ETriggerEvent::Started, this, &AGodPlayerController::SwitchToGodCamera);
 		EIC->BindAction(IARoomCamera, ETriggerEvent::Started, this, &AGodPlayerController::SwitchToRoomCamera);
-		EIC->BindAction(IAToggleVisibleGrid, ETriggerEvent::Started, this, &AGodPlayerController::ToggleVisibleGridLine);
 	}
 }
 
@@ -69,18 +68,6 @@ void AGodPlayerController::SwitchToRoomCamera()
 {
 	CurrentCameraChannel = ECameraChannel::Room1;
 	SwitchCamera();
-}
-
-// グリッド線の表示切替
-void AGodPlayerController::ToggleVisibleGridLine()
-{
-	// 現在の部屋を取得
-
-	// グリッド線の表示切替
-	if (URoomManager* RoomManager = GetWorld()->GetSubsystem<URoomManager>())
-	{
-		RoomManager->ToggleVisibleGrid();
-	}
 }
 
 // カメラ切り替え

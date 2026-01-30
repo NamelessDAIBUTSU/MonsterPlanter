@@ -6,6 +6,7 @@
 #include <Astral/PlayerAstral.h>
 #include <Ghost/PlayerGhost.h>
 #include "Ghost/GhostManagerComponent.h"
+#include "GameFramework/CharacterMovementComponent.h"
 
 AMyPlayerController::AMyPlayerController()
 {
@@ -81,6 +82,12 @@ void AMyPlayerController::ChangeToAstralMode()
 
 	// アストラル用IMCをアクティブ化
 	ActivateAstralInputContext();
+
+	// 本体のアニメーションを止めるために移動を測定し
+	if (UCharacterMovementComponent* MoveComp = Body->GetCharacterMovement())
+	{
+		MoveComp->StopMovementImmediately();
+	}
 }
 
 // 本体モードに変更

@@ -27,9 +27,6 @@ public:
 	// カメラを部屋カメラに切り替え
 	UFUNCTION()
 	void SwitchToRoomCamera();
-	// グリッド線の表示切替
-	UFUNCTION()
-	void ToggleVisibleGridLine();
 
 private:
 	// カメラ切り替え
@@ -43,8 +40,6 @@ public:
 	TObjectPtr<class UInputAction> IAGodCamera;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
 	TObjectPtr<class UInputAction> IARoomCamera;
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
-	TObjectPtr<class UInputAction> IAToggleVisibleGrid;
 
 private:
 	// 現在のカメラチャンネル
