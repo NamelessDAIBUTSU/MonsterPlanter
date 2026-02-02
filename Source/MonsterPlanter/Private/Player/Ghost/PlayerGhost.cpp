@@ -96,10 +96,11 @@ void APlayerGhost::UpdateMove(float DeltaTime)
 	if (bIsMoveFinished)
 		return;
 
-	if (OrbitPoints.IsEmpty() || OrbitPoints.IsValidIndex(CurrentOrbitIndex) == false)
+	if (OrbitData.IsEmpty() || OrbitData.IsValidIndex(CurrentOrbitIndex) == false)
 	{
 		bIsMoveFinished = true;
 
+		UE_LOG(LogTemp, Warning, TEXT("MoveFinished"));
 		// 移動完了したら、時間計測して一定時間経過後に消滅させる
 		GetWorldTimerManager().SetTimer(
 			DestroyTimerHandle,
@@ -114,39 +115,49 @@ void APlayerGhost::UpdateMove(float DeltaTime)
 
 
 	// 現在の目標地点
-	const FTransform& TargetTransform = OrbitPoints[CurrentOrbitIndex];
+	const FTransform& TargetTransform = OrbitData[CurrentOrbitIndex].TargetTransform;
 	const FVector TargetLocation = TargetTransform.GetLocation();
+
+	// 到達までにかかる時間
+	const float DeltaSec = OrbitData[CurrentOrbitIndex].DeltaSec;
 
 	// 現在位置
 	const FVector CurrentLocation = GetActorLocation();
 
 	// 目標方向
 	FVector ToTarget = TargetTransform.GetLocation() - CurrentLocation;
-	const float DistanceToTarget = ToTarget.Size();
-	ToTarget.Normalize();
+	//const float DistanceToTarget = ToTarget.Size();
+	//ToTarget.Normalize();
 
 	// 本体の移動速度を取得
-	APlayerBody* Body = GetBody();
-	if (Body == nullptr || Body->GetMovementComponent() == nullptr)
-		return;
+	//APlayerBody* Body = GetBody();
+	//if (Body == nullptr || Body->GetMovementComponent() == nullptr)
+	//	return;
 
-	const float MoveSpeed = Body->GetMovementComponent()->GetMaxSpeed();
+	//const float MoveSpeed = Body->GetMovementComponent()->GetMaxSpeed();
 
 	// 移動量
-	const FVector MoveDelta = ToTarget * MoveSpeed * DeltaTime;
+	const FVector MoveDelta = ToTarget * (DeltaTime / DeltaSec);
+
+	ElapsedSec += DeltaTime;
 
 	// 目標に到達したか
-	if (DistanceToTarget <= MoveDelta.Size())
+	if (ElapsedSec >= DeltaSec)
 	{
+		UE_LOG(LogTemp, Warning, TEXT("Goal: Rotation:%f, %f, %f Index:%d"), MoveDelta.Rotation().Pitch, MoveDelta.Rotation().Yaw, MoveDelta.Rotation().Roll, CurrentOrbitIndex);
 		// 到達したら位置補正して次の目標へ
 		SetActorLocation(TargetLocation);
-		SetActorRotation(MoveDelta.Rotation());
-		CurrentOrbitIndex++;;
+		SetActorRotation(TargetTransform.Rotator());
+		CurrentOrbitIndex++;
+
+
+		ElapsedSec = 0.f;
 	}
 	else
 	{
+		UE_LOG(LogTemp, Warning, TEXT("Until: Rotation:%f, %f, %f Index:%d"), MoveDelta.Rotation().Pitch, MoveDelta.Rotation().Yaw, MoveDelta.Rotation().Roll, CurrentOrbitIndex);
 		// 到達していなければ移動
 		SetActorLocation(CurrentLocation + MoveDelta);
-		SetActorRotation(MoveDelta.Rotation());
+		SetActorRotation(TargetTransform.Rotator());
 	}
 }

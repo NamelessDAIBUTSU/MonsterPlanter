@@ -51,9 +51,15 @@ void APlayerAstral::EndPlay(const EEndPlayReason::Type EndPlayReason)
 {
 	Super::EndPlay(EndPlayReason);
 
+	// 最後の軌道保存
+	FAstralOrbitData Data;
+	Data.DeltaSec = ElapsedSec;
+	Data.TargetTransform = GetActorTransform();
+	OrbitDataList.Add(Data);
+
 	if (PlayerBody.IsValid())
 	{
-		PlayerBody->SetOrbitPoints(OrbitPoints);
+		PlayerBody->SetOrbitData(OrbitDataList);
 	}
 }
 
@@ -67,9 +73,14 @@ void APlayerAstral::Tick(float DeltaTime)
 	// 軌道保存
 	if (ElapsedSec >= OrbitSaveInterval)
 	{
-		OrbitPoints.Add(GetActorTransform());
+		FAstralOrbitData Data;
+		Data.DeltaSec = ElapsedSec;
+		Data.TargetTransform = GetActorTransform();
+		OrbitDataList.Add(Data);
 		
 		ElapsedSec = 0.f;
+
+		UE_LOG(LogTemp, Warning, TEXT("Rotation:%f, %f, %f"), GetActorRotation().Pitch, GetActorRotation().Yaw, GetActorRotation().Roll);
 	}
 }
 

@@ -6,6 +6,7 @@
 #include "GameFramework/Character.h"
 #include "InputActionValue.h"
 #include "Interface/Weighted.h"
+#include <Player/PlayerDef.h>
 #include "PlayerBody.generated.h"
 
 class APlayerGhost;
@@ -39,8 +40,8 @@ public:
 	UGhostManagerComponent* GetGhostManagerComponent() const { return GhostManagerComp; }
 
 	// 軌道の保存
-	void SetOrbitPoints(const TArray<FTransform>& Points);
-	TArray<TArray<FTransform>> GetOrbitPoints() const { return OrbitPoints; }
+	void SetOrbitData(const TArray<FAstralOrbitData>& Data);
+	TArray<TArray<FAstralOrbitData>> GetOrbitDatas() const { return OrbitDatas; }
 
 private:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
@@ -51,6 +52,6 @@ private:
 	TObjectPtr<UGhostManagerComponent> GhostManagerComp;
 
 	// 保存した軌道
-	TArray<TArray<FTransform>> OrbitPoints;
+	TArray<TArray<FAstralOrbitData>> OrbitDatas;
 
 };

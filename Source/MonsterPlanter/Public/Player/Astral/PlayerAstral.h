@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
 #include "InputActionValue.h"
+#include <Player/PlayerDef.h>
 #include "PlayerAstral.generated.h"
 
 class APlayerBody;
@@ -42,15 +43,16 @@ private:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
 	class USpringArmComponent* CameraBoom;
 
+	// 軌道保存間隔(s)
+	UPROPERTY(EditAnywhere)
+	float OrbitSaveInterval = 0.05f;
+
 private:
 	// 本体への参照
 	TWeakObjectPtr<APlayerBody> PlayerBody;
 
 	// 軌道保存
-	TArray<FTransform> OrbitPoints;
-
-	// 軌道保存間隔(s)
-	float OrbitSaveInterval = 0.05f;
+	TArray<FAstralOrbitData> OrbitDataList;
 
 	// 経過時間
 	float ElapsedSec = 0.f;

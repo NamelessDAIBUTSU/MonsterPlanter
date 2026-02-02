@@ -63,8 +63,8 @@ void APlayerBody::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 }
 
 // 軌道の保存
-void APlayerBody::SetOrbitPoints(const TArray<FTransform>& Points)
+void APlayerBody::SetOrbitData(const TArray<FAstralOrbitData>& Data)
 {
-	OrbitPoints.Add(Points);
+	OrbitDatas.Add(Data);
 }
 

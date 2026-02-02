@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
 #include "Interface/Weighted.h"
+#include <Player/PlayerDef.h>
 #include "PlayerGhost.generated.h"
 
 class APlayerBody;
@@ -38,7 +39,7 @@ public:
 	void SetBody(APlayerBody* Body);
 	APlayerBody* GetBody();
 
-	void SetOrbitPoints(const TArray<FTransform>& Points) { OrbitPoints = Points; }
+	void SetOrbitPoints(const TArray<FAstralOrbitData>& Data) { OrbitData = Data; }
 
 	UFUNCTION()
 	void OnTimerDestroy();
@@ -58,7 +59,7 @@ private:
 	class USpringArmComponent* CameraBoom;
 
 	// 移動予定軌跡
-	TArray<FTransform> OrbitPoints;
+	TArray<FAstralOrbitData> OrbitData;
 	// 現在の軌跡インデックス
 	int32 CurrentOrbitIndex = 0;
 
@@ -70,4 +71,6 @@ private:
 	float DeleteSec = 3.f;
 
 	FTimerHandle DestroyTimerHandle;
+
+	float ElapsedSec = 0.f;
 };

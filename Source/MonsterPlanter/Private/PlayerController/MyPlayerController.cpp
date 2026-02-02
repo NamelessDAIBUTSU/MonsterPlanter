@@ -126,13 +126,13 @@ void AMyPlayerController::SpawnGhost()
 	FActorSpawnParameters Params;
 	Params.SpawnCollisionHandlingOverride =
 		ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
-	for (const TArray<FTransform>& Orbit : Body->GetOrbitPoints())
+	for (const TArray<FAstralOrbitData>& Orbit : Body->GetOrbitDatas())
 	{
 		if (Orbit.IsEmpty())
 			continue;
 
 		// ゴーストの生成
-		APlayerGhost* Ghost = GetWorld()->SpawnActor<APlayerGhost>(GhostClass, Orbit[0].GetLocation(), Orbit[0].GetRotation().Rotator(), Params);
+		APlayerGhost* Ghost = GetWorld()->SpawnActor<APlayerGhost>(GhostClass, Orbit[0].TargetTransform.GetLocation(), Orbit[0].TargetTransform.GetRotation().Rotator(), Params);
 		if (Ghost == nullptr)
 			return;
 
