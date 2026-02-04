@@ -25,20 +25,13 @@ public:
 	virtual void Deinitialize() override {}
 
 public:
-	// 部屋生成初期化
-	void CreateDefaultRooms();
-
-	// 部屋の生成
-	void CreateRoom(ERoomType RoomType);
-
 	// 部屋の追加
 	void AddRoom(ARoomBase* NewRoom);
 
-private:
-	// 部屋クラスマップ
-	UPROPERTY()
-	TMap<ERoomType, TSubclassOf<ARoomBase>> RoomClassMap;
+	// 現在の部屋の取得
+	ARoomBase* GetCurrentRoom() { return CurrentRoom.Get(); }
 
+private:
 	// 所持部屋リスト
 	UPROPERTY()
 	TSet<TObjectPtr<ARoomBase>> Rooms;

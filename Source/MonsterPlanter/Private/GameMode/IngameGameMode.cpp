@@ -12,11 +12,6 @@ void AIngameGameMode::StartPlay()
 {
 	Super::StartPlay();
 
-	// デフォルトで存在させる部屋を生成
-	if (URoomManager* RoomManager = GetWorld()->GetSubsystem<URoomManager>())
-	{
-		RoomManager->CreateDefaultRooms();
-	}
 }
 
 void AIngameGameMode::Tick(float DeltaSeconds)

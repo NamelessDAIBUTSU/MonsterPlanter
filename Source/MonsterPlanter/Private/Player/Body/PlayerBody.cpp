@@ -31,9 +31,8 @@ APlayerBody::APlayerBody()
 	SpringArmComp = CreateDefaultSubobject<USpringArmComponent>(TEXT("CameraBoom"));
 	SpringArmComp->SetupAttachment(RootComponent);
 	SpringArmComp->SetUsingAbsoluteRotation(true);
-	SpringArmComp->TargetArmLength = 600.f;
-	SpringArmComp->SetRelativeRotation(FRotator(-45.f, 0.f, 0.f));
 	SpringArmComp->bDoCollisionTest = false;
+	ChangeToNormalCameraRotate();
 
 	// Create a camera...
 	CameraComp = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
@@ -66,5 +65,25 @@ void APlayerBody::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 void APlayerBody::SetOrbitData(const TArray<FAstralOrbitData>& Data)
 {
 	OrbitDatas.Add(Data);
+}
+
+// 落下用のカメラ回転に切り替え
+void APlayerBody::ChangeToFallCameraRotate()
+{
+	if (SpringArmComp == nullptr)
+		return;
+
+	SpringArmComp->TargetArmLength = FallCameraArmLength;
+	SpringArmComp->SetRelativeRotation(FallCameraRotation);
+}
+
+// 通常用のカメラ回転に切り替え
+void APlayerBody::ChangeToNormalCameraRotate()
+{
+	if (SpringArmComp == nullptr)
+		return;
+
+	SpringArmComp->TargetArmLength = NormalCameraArmLength;
+	SpringArmComp->SetRelativeRotation(NormalCameraRotation);
 }
 

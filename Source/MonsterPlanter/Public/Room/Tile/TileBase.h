@@ -31,11 +31,6 @@ private:
 	// メッシュからコリジョンを設定
 	void SetupCollisionFromMesh();
 
-public:
-	// タイルタイプ
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	EFloorTileType TileType;
-
 protected:
 	// 壁タイルのメッシュコンポーネント
 	UPROPERTY(VisibleAnywhere)

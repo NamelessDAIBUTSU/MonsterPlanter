@@ -43,6 +43,23 @@ public:
 	void SetOrbitData(const TArray<FAstralOrbitData>& Data);
 	TArray<TArray<FAstralOrbitData>> GetOrbitDatas() const { return OrbitDatas; }
 
+	// 落下用のカメラ回転に切り替え
+	void ChangeToFallCameraRotate();
+	// 通常用のカメラ回転に切り替え
+	void ChangeToNormalCameraRotate();
+
+public:
+	// 通常カメラ
+	UPROPERTY(EditAnywhere)
+	FRotator NormalCameraRotation = FRotator(-45.f, 0.f, 0.f);
+	UPROPERTY(EditAnywhere)
+	float NormalCameraArmLength = 1000.f;
+
+	UPROPERTY(EditAnywhere)
+	FRotator FallCameraRotation = FRotator(-20.f, 0.f, 0.f);
+	UPROPERTY(EditAnywhere)
+	float FallCameraArmLength = 500.f;
+
 private:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<class UCameraComponent> CameraComp;

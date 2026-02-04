@@ -22,10 +22,12 @@ enum class ERoomType : uint8
     Devil       UMETA(DisplayName = "魔王部屋"),
 };
 
-// フロアタイルの種類
+// 部屋の状態
 UENUM(BlueprintType)
-enum class EFloorTileType : uint8
+enum class ERoomState : uint8
 {
-    Floor    UMETA(DisplayName = "床"),
-    Soil     UMETA(DisplayName = "土壌"),
+    InActive        UMETA(DisplayName = "ロード済みだが更新停止"),
+    Activating      UMETA(DisplayName = "入室演出中"),
+    Active          UMETA(DisplayName = "更新中"),
+	Deactivating    UMETA(DisplayName = "退室演出中"),
 };

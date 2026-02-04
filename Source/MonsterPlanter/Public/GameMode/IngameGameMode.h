@@ -22,5 +22,6 @@ public:
 	virtual void Tick(float DeltaSeconds) override;
 
 private:
-
+	// 部屋マネージャー
+	TObjectPtr<class URoomManager> RoomManager;
 };
