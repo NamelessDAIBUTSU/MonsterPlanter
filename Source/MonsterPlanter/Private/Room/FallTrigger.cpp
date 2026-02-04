@@ -59,8 +59,7 @@ void AFallTrigger::OnOverlapEnd(class UPrimitiveComponent* OverlappedComp, class
 	// 落下したプレイヤーを復活ポイントに戻す
 	if (URoomManager* RoomManager = GetWorld()->GetSubsystem<URoomManager>())
 	{
-		ARoomBase* CurrentRoom = RoomManager->GetCurrentRoom();
-		if (CurrentRoom)
+		if (ARoomBase* CurrentRoom = RoomManager->GetCurrentRoom())
 		{
 			PlayerBody->SetActorLocation(CurrentRoom->GetRespawnLocation());
 		}

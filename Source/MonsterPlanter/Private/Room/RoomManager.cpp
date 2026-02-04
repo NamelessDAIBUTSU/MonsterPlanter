@@ -25,3 +25,8 @@ void URoomManager::AddRoom(ARoomBase* NewRoom)
 		CurrentRoom = NewRoom;
 	}
 }
+
+ARoomBase* URoomManager::GetRoom(int32 RoomID) const
+{
+	return nullptr;
+}

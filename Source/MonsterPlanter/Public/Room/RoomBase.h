@@ -26,6 +26,11 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 public:
+	// 初期化処理
+	virtual void InitializeRoom() {}
+	// 終了処理
+	virtual void FinalizeRoom() {}
+
 	// 部屋ID
 	int32 GetRoomID() const { return RoomID; }
 	void SetRoomID(int32 Id) { RoomID = Id; }

@@ -28,7 +28,11 @@ public:
 	// 部屋の追加
 	void AddRoom(ARoomBase* NewRoom);
 
-	// 現在の部屋の取得
+	// 部屋の取得
+	ARoomBase* GetRoom(int32 RoomID) const;
+
+	// 現在の部屋
+	void SetCurrentRoom(ARoomBase* Room) { CurrentRoom = Room; }
 	ARoomBase* GetCurrentRoom() { return CurrentRoom.Get(); }
 
 private:
