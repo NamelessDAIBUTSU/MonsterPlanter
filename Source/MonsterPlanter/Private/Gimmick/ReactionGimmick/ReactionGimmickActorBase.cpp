@@ -16,3 +16,9 @@ void AReactionGimmickActorBase::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 }
+
+// シーケンサーからギミック軌道するためのコールバック
+void AReactionGimmickActorBase::OnSequenceActivate()
+{
+	ActivateGimmick();
+}

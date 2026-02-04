@@ -9,6 +9,9 @@
 #include <Camera/CameraManager.h>
 #include <Camera/CameraComponent.h>
 #include <Room/RoomManager.h>
+#include "LevelSequenceActor.h"
+#include "LevelSequencePlayer.h"
+
 
 ARoomBase::ARoomBase()
 {
@@ -55,5 +58,14 @@ void ARoomBase::AddWallTile(AWallTile* Tile)
 void ARoomBase::AddRoofTile(AFloorTile* Tile)
 {
 	RoofTiles.Add(Tile);
+}
+
+// ドア開閉シーケンスの再生
+void ARoomBase::PlayDoorOpenSequence()
+{
+	if (IsValid(LevelSequenceActor) && IsValid(LevelSequenceActor->SequencePlayer))
+	{
+		LevelSequenceActor->SequencePlayer->Play();
+	}
 }
 

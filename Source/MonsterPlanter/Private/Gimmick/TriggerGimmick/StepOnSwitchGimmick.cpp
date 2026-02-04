@@ -3,6 +3,8 @@
 
 #include "Gimmick/TriggerGimmick/StepOnSwitchGimmick.h"
 #include "Gimmick/ReactionGimmick/ReactionGimmickActorBase.h"
+#include <Room/RoomManager.h>
+#include <Room/RoomBase.h>
 
 AStepOnSwitchGimmick::AStepOnSwitchGimmick()
 {
@@ -24,14 +26,23 @@ void AStepOnSwitchGimmick::BeginPlay()
 
 void AStepOnSwitchGimmick::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	// ギミック起動
-	for (AReactionGimmickActorBase* TargetGimmick : TargetGimmicksInstance)
+	// ドア開閉シーケンスの再生
+	if (URoomManager* RoomManager = GetWorld()->GetSubsystem<URoomManager>())
 	{
-		if (TargetGimmick)
+		if (ARoomBase* CurrentRoom = RoomManager->GetCurrentRoom())
 		{
-			TargetGimmick->ActivateGimmick();
+			CurrentRoom->PlayDoorOpenSequence();
 		}
 	}
+
+	//// ギミック起動
+	//for (AReactionGimmickActorBase* TargetGimmick : TargetGimmicksInstance)
+	//{
+	//	if (TargetGimmick)
+	//	{
+	//		TargetGimmick->ActivateGimmick();
+	//	}
+	//}
 
 	// 当たり判定の無効化
 	SwitchCollision->SetCollisionEnabled(ECollisionEnabled::NoCollision);

@@ -45,6 +45,8 @@ public:
 	// 天井タイルの追加
 	void AddRoofTile(AFloorTile* Tile);
 
+	// ドア開閉シーケンスの再生
+	void PlayDoorOpenSequence();
 
 private: /* オブジェクト */
 	// 床タイルオブジェクトの配列
@@ -68,4 +70,8 @@ private: /* オブジェクト */
 	// リスポーン地点
 	UPROPERTY(EditAnywhere, meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<AActor> RespawnPoint;
+
+	// レベルシーケンスアクター
+	UPROPERTY(EditAnywhere, meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<class ALevelSequenceActor> LevelSequenceActor;
 };

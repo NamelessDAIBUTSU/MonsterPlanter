@@ -26,6 +26,11 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 public:
+	// シーケンサーからギミック軌道するためのコールバック
+	UFUNCTION(BluePrintCallable)
+	void OnSequenceActivate();
+
+public:
 	// ギミック起動
 	virtual void ActivateGimmick() {};
 	// ギミック停止
