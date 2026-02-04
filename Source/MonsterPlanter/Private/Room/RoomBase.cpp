@@ -3,9 +3,7 @@
 #include "Room/RoomBase.h"
 #include <Room/RoomDef.h>
 #include "Components/PointLightComponent.h"
-#include <Camera/RoomCamera.h>
 #include <Kismet/GameplayStatics.h>
-#include <PlayerController/GodPlayerController.h>
 #include <Camera/CameraManager.h>
 #include <Camera/CameraComponent.h>
 #include <Room/RoomManager.h>

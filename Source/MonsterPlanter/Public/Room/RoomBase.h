@@ -4,7 +4,6 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "RoomLayoutData.h"
 #include "Tile/FloorTile.h"
 #include "Tile/WallTile.h"
 #include "Tile/RoofTile.h"
