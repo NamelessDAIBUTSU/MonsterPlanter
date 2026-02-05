@@ -28,7 +28,7 @@ public:
 
 public:
 	// 初期化処理
-	virtual void InitializeRoom() {}
+	virtual void InitializeRoom();
 	// 終了処理
 	virtual void FinalizeRoom() {}
 
@@ -51,13 +51,22 @@ public:
 	// 落下シーケンスの再生
 	void PlayFallSequence();
 
+	// 開始演出シーケンスの停止
+	void StopEntrySequence();
+
 	// プレイヤーをリスポーンさせる
 	UFUNCTION(BluePrintCallable)
 	void OnRespawnPlayer();
 
+	// プレイヤーを初期位置に移動させる
+	UFUNCTION(BluePrintCallable)
+	void OnEntryPlayer();
+
 private:
 	// シーケンスの再生
 	void PlaySequenceImpl(ALevelSequenceActor* LSA);
+	// シーケンスの停止
+	void StopSequenceImpl(ALevelSequenceActor* LSA);
 
 private: /* オブジェクト */
 	// 床タイルオブジェクトの配列
@@ -82,9 +91,19 @@ private: /* オブジェクト */
 	UPROPERTY(EditAnywhere, meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<AActor> RespawnPoint;
 
+private: /* シーケンス関連 */
 	// レベルシーケンスアクター
 	UPROPERTY(EditAnywhere, meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<ALevelSequenceActor> LSA_DoorOpen;
 	UPROPERTY(EditAnywhere, meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<ALevelSequenceActor> LSA_Fall;
+	UPROPERTY(EditAnywhere, meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<ALevelSequenceActor> LSA_Entry;
+
+	// エントリー演出フラグ
+	bool bIsEntried = false;
+
+	// 開始演出プレイヤーの移動速度
+	UPROPERTY(EditAnywhere, meta = (AllowPrivateAccess = "true"))
+	float EntryMoveSpeed = 0.2f;
 };

@@ -38,21 +38,12 @@ void AEntryTrigger::Tick(float DeltaTime)
 void AEntryTrigger::OnOverlapBegin(class UPrimitiveComponent* OverlappedComp, class AActor* OtherActor,
 	class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	APlayerBody* PlayerBody = Cast<APlayerBody>(OtherActor);
-	if (PlayerBody == nullptr)
-		return;
-
-	// 入場演出再生
-	{
-
-	}
-
-	// 現在の部屋の初期化処理
+	// 開始演出を停止
 	if (URoomManager* RoomManager = GetWorld()->GetSubsystem<URoomManager>())
 	{
 		if (ARoomBase* CurrentRoom = RoomManager->GetCurrentRoom())
 		{
-			CurrentRoom->InitializeRoom();
+			CurrentRoom->StopEntrySequence();
 		}
 	}
 

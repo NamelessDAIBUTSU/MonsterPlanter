@@ -1,15 +1,12 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 #include "Room/RoomBase.h"
-#include <Room/RoomDef.h>
-#include "Components/PointLightComponent.h"
 #include <Kismet/GameplayStatics.h>
-#include <Camera/CameraManager.h>
-#include <Camera/CameraComponent.h>
 #include <Room/RoomManager.h>
 #include "LevelSequenceActor.h"
 #include "LevelSequencePlayer.h"
-
+#include <Player/Body/PlayerBody.h>
+#include <GameFramework/CharacterMovementComponent.h>
 
 ARoomBase::ARoomBase()
 {
@@ -29,12 +26,20 @@ void ARoomBase::BeginPlay()
 	{
 		RoomManager->AddRoom(this);
 	}
+
+	InitializeRoom();
 }
 
 void ARoomBase::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+}
+
+// 初期化処理
+void ARoomBase::InitializeRoom()
+{
+	PlaySequenceImpl(LSA_Entry);
 }
 
 // リスポーン地点の取得
@@ -66,6 +71,14 @@ void ARoomBase::PlaySequenceImpl(ALevelSequenceActor* LSA)
 		LSA->SequencePlayer->Play();
 	}
 }
+// シーケンスの停止
+void ARoomBase::StopSequenceImpl(ALevelSequenceActor* LSA)
+{
+	if (IsValid(LSA) && IsValid(LSA->SequencePlayer))
+	{
+		LSA->SequencePlayer->Stop();
+	}
+}
 
 // ドア開閉シーケンスの再生
 void ARoomBase::PlayDoorOpenSequence()
@@ -79,11 +92,17 @@ void ARoomBase::PlayFallSequence()
 	PlaySequenceImpl(LSA_Fall);
 }
 
+// 開始演出シーケンスの停止
+void ARoomBase::StopEntrySequence()
+{
+	StopSequenceImpl(LSA_Entry);
+}
+
 // プレイヤーをリスポーンさせる
 void ARoomBase::OnRespawnPlayer()
 {
 	// プレイヤーの取得
-	AActor* PlayerBody = UGameplayStatics::GetPlayerPawn(GetWorld(), 0);
+	APlayerBody* PlayerBody = Cast<APlayerBody>(UGameplayStatics::GetPlayerPawn(GetWorld(), 0));
 	if (PlayerBody == nullptr)
 		return;
 
@@ -93,5 +112,34 @@ void ARoomBase::OnRespawnPlayer()
 
 	// プレイヤーに固定落下ダメージを与える
 
+}
+
+void ARoomBase::OnEntryPlayer()
+{
+	// 到達したなら更新停止
+	if (bIsEntried)		
+		return;
+
+	// プレイヤーの取得
+	APlayerBody* PlayerBody = Cast<APlayerBody>(UGameplayStatics::GetPlayerPawn(GetWorld(), 0));
+	if (PlayerBody == nullptr)
+		return;
+
+	UCharacterMovementComponent* CharacterMovement = PlayerBody->GetCharacterMovement();
+	if (CharacterMovement == nullptr)
+		return;
+
+	// プレイヤーを初期位置に移動させる
+	FVector MoveDirection = GetRespawnLocation() - PlayerBody->GetActorLocation();
+	MoveDirection.Z = 0.f;
+	MoveDirection.Normalize();
+	CharacterMovement->AddInputVector(MoveDirection * EntryMoveSpeed, true);
+
+	// 到達したら位置を補正
+	if (PlayerBody->GetActorLocation().Equals(GetRespawnLocation(), 10.f))
+	{
+		PlayerBody->SetActorLocation(GetRespawnLocation());
+		bIsEntried = true;
+	}
 }
 
