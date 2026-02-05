@@ -10,6 +10,8 @@
 #include <Room/RoomDef.h>
 #include "RoomBase.generated.h"
 
+class ALevelSequenceActor;
+
 UCLASS()
 class MONSTERPLANTER_API ARoomBase : public AActor
 {
@@ -46,6 +48,16 @@ public:
 
 	// ドア開閉シーケンスの再生
 	void PlayDoorOpenSequence();
+	// 落下シーケンスの再生
+	void PlayFallSequence();
+
+	// プレイヤーをリスポーンさせる
+	UFUNCTION(BluePrintCallable)
+	void OnRespawnPlayer();
+
+private:
+	// シーケンスの再生
+	void PlaySequenceImpl(ALevelSequenceActor* LSA);
 
 private: /* オブジェクト */
 	// 床タイルオブジェクトの配列
@@ -72,5 +84,7 @@ private: /* オブジェクト */
 
 	// レベルシーケンスアクター
 	UPROPERTY(EditAnywhere, meta = (AllowPrivateAccess = "true"))
-	TObjectPtr<class ALevelSequenceActor> LevelSequenceActor;
+	TObjectPtr<ALevelSequenceActor> LSA_DoorOpen;
+	UPROPERTY(EditAnywhere, meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<ALevelSequenceActor> LSA_Fall;
 };

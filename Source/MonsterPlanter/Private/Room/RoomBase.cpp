@@ -58,12 +58,40 @@ void ARoomBase::AddRoofTile(AFloorTile* Tile)
 	RoofTiles.Add(Tile);
 }
 
+// シーケンスの再生
+void ARoomBase::PlaySequenceImpl(ALevelSequenceActor* LSA)
+{
+	if (IsValid(LSA) && IsValid(LSA->SequencePlayer))
+	{
+		LSA->SequencePlayer->Play();
+	}
+}
+
 // ドア開閉シーケンスの再生
 void ARoomBase::PlayDoorOpenSequence()
 {
-	if (IsValid(LevelSequenceActor) && IsValid(LevelSequenceActor->SequencePlayer))
-	{
-		LevelSequenceActor->SequencePlayer->Play();
-	}
+	PlaySequenceImpl(LSA_DoorOpen);
+}
+
+// 落下シーケンスの再生
+void ARoomBase::PlayFallSequence()
+{
+	PlaySequenceImpl(LSA_Fall);
+}
+
+// プレイヤーをリスポーンさせる
+void ARoomBase::OnRespawnPlayer()
+{
+	// プレイヤーの取得
+	AActor* PlayerBody = UGameplayStatics::GetPlayerPawn(GetWorld(), 0);
+	if (PlayerBody == nullptr)
+		return;
+
+
+	// 落下したプレイヤーを復活ポイントに戻す
+	PlayerBody->SetActorLocation(GetRespawnLocation());
+
+	// プレイヤーに固定落下ダメージを与える
+
 }
 

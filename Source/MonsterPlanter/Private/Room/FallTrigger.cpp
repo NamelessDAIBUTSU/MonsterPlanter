@@ -43,8 +43,14 @@ void AFallTrigger::OnOverlapBegin(class UPrimitiveComponent* OverlappedComp, cla
 	if (PlayerBody == nullptr)
 		return;
 
-	// カメラを落下専用の回転に変更
-	PlayerBody->ChangeToFallCameraRotate();
+	// 落下シーケンスの再生
+	if (URoomManager* RoomManager = GetWorld()->GetSubsystem<URoomManager>())
+	{
+		if (ARoomBase* CurrentRoom = RoomManager->GetCurrentRoom())
+		{
+			CurrentRoom->PlayFallSequence();
+		}
+	}
 }
 
 // 落下終了時に、プレイヤーを元に戻す
@@ -56,18 +62,5 @@ void AFallTrigger::OnOverlapEnd(class UPrimitiveComponent* OverlappedComp, class
 		return;
 
 
-	// 落下したプレイヤーを復活ポイントに戻す
-	if (URoomManager* RoomManager = GetWorld()->GetSubsystem<URoomManager>())
-	{
-		if (ARoomBase* CurrentRoom = RoomManager->GetCurrentRoom())
-		{
-			PlayerBody->SetActorLocation(CurrentRoom->GetRespawnLocation());
-		}
-	}
 
-	// プレイヤーに固定落下ダメージを与える
-
-
-	// カメラを通常の回転に変更
-	PlayerBody->ChangeToNormalCameraRotate();
 }

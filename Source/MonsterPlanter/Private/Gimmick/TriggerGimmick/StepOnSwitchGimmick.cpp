@@ -35,15 +35,6 @@ void AStepOnSwitchGimmick::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, A
 		}
 	}
 
-	//// ギミック起動
-	//for (AReactionGimmickActorBase* TargetGimmick : TargetGimmicksInstance)
-	//{
-	//	if (TargetGimmick)
-	//	{
-	//		TargetGimmick->ActivateGimmick();
-	//	}
-	//}
-
 	// 当たり判定の無効化
 	SwitchCollision->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 }
