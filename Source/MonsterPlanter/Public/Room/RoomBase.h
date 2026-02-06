@@ -32,6 +32,26 @@ public:
 	// 終了処理
 	virtual void FinalizeRoom() {}
 
+public: /* シーケンス関連 */
+	// ドア開閉シーケンスの再生
+	void PlayDoorOpenSequence();
+	// 落下シーケンスの再生
+	void PlayFallSequence();
+	// クリアシーケンスの再生
+	void PlayClearSequence();
+
+	// 開始演出シーケンスの停止
+	void StopEntrySequence();
+
+	// プレイヤーをリスポーンさせる
+	UFUNCTION(BluePrintCallable)
+	void OnRespawnPlayer();
+
+	// プレイヤーを初期位置に移動させる
+	UFUNCTION(BluePrintCallable)
+	void OnEntryPlayer();
+
+public:
 	// 部屋ID
 	int32 GetRoomID() const { return RoomID; }
 	void SetRoomID(int32 Id) { RoomID = Id; }
@@ -45,22 +65,6 @@ public:
 	void AddWallTile(AWallTile* Tile);
 	// 天井タイルの追加
 	void AddRoofTile(AFloorTile* Tile);
-
-	// ドア開閉シーケンスの再生
-	void PlayDoorOpenSequence();
-	// 落下シーケンスの再生
-	void PlayFallSequence();
-
-	// 開始演出シーケンスの停止
-	void StopEntrySequence();
-
-	// プレイヤーをリスポーンさせる
-	UFUNCTION(BluePrintCallable)
-	void OnRespawnPlayer();
-
-	// プレイヤーを初期位置に移動させる
-	UFUNCTION(BluePrintCallable)
-	void OnEntryPlayer();
 
 private:
 	// シーケンスの再生
@@ -99,6 +103,8 @@ private: /* シーケンス関連 */
 	TObjectPtr<ALevelSequenceActor> LSA_Fall;
 	UPROPERTY(EditAnywhere, meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<ALevelSequenceActor> LSA_Entry;
+	UPROPERTY(EditAnywhere, meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<ALevelSequenceActor> LSA_Clear;
 
 	// エントリー演出フラグ
 	bool bIsEntried = false;

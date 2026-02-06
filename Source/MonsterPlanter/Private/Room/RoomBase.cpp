@@ -92,6 +92,11 @@ void ARoomBase::PlayFallSequence()
 	PlaySequenceImpl(LSA_Fall);
 }
 
+void ARoomBase::PlayClearSequence()
+{
+	PlaySequenceImpl(LSA_Clear);
+}
+
 // 開始演出シーケンスの停止
 void ARoomBase::StopEntrySequence()
 {
