@@ -48,6 +48,10 @@ public:
 	// 通常用のカメラ回転に切り替え
 	void ChangeToNormalCameraRotate();
 
+	// 回避行動
+	void Dodge();
+	bool IsPlayingDodge();
+
 public:
 	// 通常カメラ
 	UPROPERTY(EditAnywhere)
@@ -71,4 +75,7 @@ private:
 	// 保存した軌道
 	TArray<TArray<FAstralOrbitData>> OrbitDatas;
 
+private: /* アニメーション */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<class UAnimMontage> DodgeMontage;
 };

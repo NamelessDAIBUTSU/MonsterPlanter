@@ -87,3 +87,30 @@ void APlayerBody::ChangeToNormalCameraRotate()
 	SpringArmComp->SetRelativeRotation(NormalCameraRotation);
 }
 
+// 回避行動
+void APlayerBody::Dodge()
+{
+	if (UCharacterMovementComponent* MoveComp = GetCharacterMovement())
+	{
+		if (MoveComp->IsFalling())
+			return;
+	}
+
+	if (UAnimInstance* AnimInst = GetMesh()->GetAnimInstance())
+	{
+		if (IsValid(DodgeMontage))
+		{
+			AnimInst->Montage_Play(DodgeMontage);
+		}
+	}
+}
+
+bool APlayerBody::IsPlayingDodge()
+{
+	if (UAnimInstance* AnimInst = GetMesh()->GetAnimInstance())
+	{
+		return AnimInst->Montage_IsPlaying(DodgeMontage);
+	}
+
+	return false;
+}

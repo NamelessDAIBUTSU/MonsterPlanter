@@ -31,6 +31,7 @@ void AMyPlayerController::SetupInputComponent()
 		EIC->BindAction(IA_Astral, ETriggerEvent::Started, this, &AMyPlayerController::ChangeToAstralMode);
 		EIC->BindAction(IA_Body, ETriggerEvent::Started, this, &AMyPlayerController::ChangeToBodyMode);
 		EIC->BindAction(IA_Ghost, ETriggerEvent::Started, this, &AMyPlayerController::SpawnGhost);
+		EIC->BindAction(IA_Dodge, ETriggerEvent::Started, this, &AMyPlayerController::Dodge);
 	}
 }
 
@@ -157,4 +158,18 @@ void AMyPlayerController::Move(const FInputActionValue& Value)
 	const FVector2D InputAxis = Value.Get<FVector2D>();
 	PossessCharacter->AddMovementInput(FVector::ForwardVector, InputAxis.X);
 	PossessCharacter->AddMovementInput(FVector::RightVector, InputAxis.Y);
+}
+
+void AMyPlayerController::Dodge()
+{
+	// 本体の取得
+	APlayerBody* Body = Cast<APlayerBody>(GetPawn());
+	if (Body == nullptr)
+		return;
+
+	if (Body->IsPlayingDodge())
+		return;
+
+	// 回避行動
+	Body->Dodge();
 }

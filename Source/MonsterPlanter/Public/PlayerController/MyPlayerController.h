@@ -26,6 +26,9 @@ public:
 	// 移動
 	UFUNCTION()
 	void Move(const FInputActionValue& Value);
+	// 避ける
+	UFUNCTION()
+	void Dodge();
 
 	// アストラルモードに変更
 	UFUNCTION()
@@ -60,6 +63,8 @@ public:
 	TObjectPtr<class UInputAction> IA_Ghost;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
 	TObjectPtr<class UInputAction> IA_Body;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
+	TObjectPtr<class UInputAction> IA_Dodge;
 
 	// 生成するゴーストクラス
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
