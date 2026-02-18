@@ -20,14 +20,4 @@ protected:
 public:
 	virtual void Tick(float DeltaTime) override;
 
-
-public:
-	// モンスターデータ
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Monster")
-	TObjectPtr<class UMonsterData> MonsterData;
-
-	// スケルタルメッシュ
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Monster")
-	TObjectPtr<class USkeletalMeshComponent> MonsterMesh;
-
 };

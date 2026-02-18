@@ -114,3 +114,10 @@ bool APlayerBody::IsPlayingDodge()
 
 	return false;
 }
+
+// 無敵状態の開始
+void APlayerBody::StartInvincible()
+{
+	// 無敵時間の終了時刻を設定
+	InvincibleEndTime = GetWorld()->GetTimeSeconds() + InvincibleDuration;
+}

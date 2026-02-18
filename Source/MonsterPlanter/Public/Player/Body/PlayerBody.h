@@ -52,6 +52,12 @@ public:
 	void Dodge();
 	bool IsPlayingDodge();
 
+	// 無敵状態の開始
+	void StartInvincible();
+
+	// 無敵時間終了時刻の取得
+	float GetInvincibleEndTime() const { return InvincibleEndTime; }
+
 public:
 	// 通常カメラ
 	UPROPERTY(EditAnywhere)
@@ -74,6 +80,14 @@ private:
 
 	// 保存した軌道
 	TArray<TArray<FAstralOrbitData>> OrbitDatas;
+
+private:
+	// 無敵時間
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
+	float InvincibleDuration = 0.15f;
+
+	// 無敵状態終了時間
+	float InvincibleEndTime = 0.f;
 
 private: /* アニメーション */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
