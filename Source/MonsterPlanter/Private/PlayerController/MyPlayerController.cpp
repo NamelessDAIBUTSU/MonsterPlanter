@@ -28,6 +28,7 @@ void AMyPlayerController::SetupInputComponent()
 	if (UEnhancedInputComponent* EIC = Cast<UEnhancedInputComponent>(InputComponent))
 	{
 		EIC->BindAction(IA_Move, ETriggerEvent::Triggered, this, &AMyPlayerController::Move);
+		EIC->BindAction(IA_Mouse, ETriggerEvent::Triggered, this, &AMyPlayerController::RotateCamera);
 		EIC->BindAction(IA_Astral, ETriggerEvent::Started, this, &AMyPlayerController::ChangeToAstralMode);
 		EIC->BindAction(IA_Body, ETriggerEvent::Started, this, &AMyPlayerController::ChangeToBodyMode);
 		EIC->BindAction(IA_Ghost, ETriggerEvent::Started, this, &AMyPlayerController::SpawnGhost);
@@ -156,8 +157,34 @@ void AMyPlayerController::Move(const FInputActionValue& Value)
 		return;
 
 	const FVector2D InputAxis = Value.Get<FVector2D>();
-	PossessCharacter->AddMovementInput(FVector::ForwardVector, InputAxis.X);
-	PossessCharacter->AddMovementInput(FVector::RightVector, InputAxis.Y);
+
+	// カメラ軸で移動
+	// カメラの取得
+	FRotator CameraRot = GetControlRotation();
+	// カメラの回転から前方向と右方向を計算
+	FRotationMatrix CameraRotMat(CameraRot);
+	FVector Forward = CameraRotMat.GetUnitAxis(EAxis::X);
+	FVector Right = CameraRotMat.GetUnitAxis(EAxis::Y);
+
+	PossessCharacter->AddMovementInput(Forward, InputAxis.X);
+	PossessCharacter->AddMovementInput(Right, InputAxis.Y);
+}
+
+// カメラ回転
+void AMyPlayerController::RotateCamera(const FInputActionValue& Value)
+{
+	const FVector2D InputAxis = Value.Get<FVector2D>();
+	if (InputAxis.IsZero())
+		return;
+
+	APlayerBody* Body = Cast<APlayerBody>(GetPawn());
+	if (Body == nullptr)
+		return;
+
+	Body->RotateCamera(InputAxis);
+
+	// ログ
+	UE_LOG(LogTemp, Log, TEXT("Camera Rotated: %s"), *InputAxis.ToString());
 }
 
 void AMyPlayerController::Dodge()

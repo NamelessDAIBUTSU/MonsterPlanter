@@ -58,17 +58,15 @@ public:
 	// 無敵時間終了時刻の取得
 	float GetInvincibleEndTime() const { return InvincibleEndTime; }
 
-public:
-	// 通常カメラ
-	UPROPERTY(EditAnywhere)
-	FRotator NormalCameraRotation = FRotator(-45.f, 0.f, 0.f);
-	UPROPERTY(EditAnywhere)
-	float NormalCameraArmLength = 1000.f;
+	// カメラ回転
+	void RotateCamera(FVector2D RotateVec);
 
+public: /* カメラ */
+	// マウスによるカメラ回転スピード
 	UPROPERTY(EditAnywhere)
-	FRotator FallCameraRotation = FRotator(-20.f, 0.f, 0.f);
+	float CameraXRotateSpeed = 0.1f;
 	UPROPERTY(EditAnywhere)
-	float FallCameraArmLength = 500.f;
+	float CameraYRotateSpeed = 0.1f;
 
 private:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))

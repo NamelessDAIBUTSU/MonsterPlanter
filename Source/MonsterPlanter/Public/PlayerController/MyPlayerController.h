@@ -26,6 +26,10 @@ public:
 	// 移動
 	UFUNCTION()
 	void Move(const FInputActionValue& Value);
+	// カメラ回転
+	UFUNCTION()
+	void RotateCamera(const FInputActionValue& Value);
+
 	// 避ける
 	UFUNCTION()
 	void Dodge();
@@ -65,6 +69,8 @@ public:
 	TObjectPtr<class UInputAction> IA_Body;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
 	TObjectPtr<class UInputAction> IA_Dodge;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
+	TObjectPtr<class UInputAction> IA_Mouse;
 
 	// 生成するゴーストクラス
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
