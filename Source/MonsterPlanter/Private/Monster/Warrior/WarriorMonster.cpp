@@ -6,6 +6,8 @@
 #include <Player/Body/PlayerBody.h>
 #include <Components/BoxComponent.h>
 #include <ActorComponent/DodgeComponent.h>
+#include <ActorComponent/CombatComponent.h>
+#include <ActorComponent/HealthComponent.h>
 
 AWarriorMonster::AWarriorMonster()
 {
@@ -13,6 +15,10 @@ AWarriorMonster::AWarriorMonster()
 
 	AttackCollision = CreateDefaultSubobject<UBoxComponent>(TEXT("AttackCollision"));
 	AttackCollision->SetupAttachment(SpearMesh);
+
+	// 戦闘コンポーネントとHPコンポーネントの作成
+	CombatComp = CreateDefaultSubobject<UCombatComponent>(TEXT("CombatComponent"));
+	HPComp = CreateDefaultSubobject<UHealthComponent>(TEXT("HealthComponent"));
 }
 
 void AWarriorMonster::OnConstruction(const FTransform& Transform)
@@ -70,6 +76,9 @@ void AWarriorMonster::OnAttackCollisionOverlapBegin(UPrimitiveComponent* Overlap
 		}
 	}
 
-	// Log出力
-	UE_LOG(LogTemp, Warning, TEXT("WarriorMonster: Player hit!"));
+	// 攻撃通知
+	if (CombatComp)
+	{
+		CombatComp->Attack(OtherActor, AttackDamage);
+	}
 }

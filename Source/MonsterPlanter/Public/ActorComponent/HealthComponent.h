@@ -28,6 +28,7 @@ public:
 	float GetCurrentHP() const { return CurrentHP; }
 
 	// ダメージ受け処理
+	UFUNCTION()
 	void TakeAnyDamage(AActor* DamagedActor, float Damage, const UDamageType* DamageType, AController* InstigatedBy, AActor* DamageCauser);
 		
 private:
