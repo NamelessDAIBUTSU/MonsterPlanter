@@ -39,11 +39,11 @@ public:
 
 private:
 	// 回避アニメーションモンタージュ
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<class UAnimMontage> DodgeMontage;
 
 	// 無敵時間
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 	float InvincibleDuration = 0.15f;
 
 	// 無敵状態終了時間

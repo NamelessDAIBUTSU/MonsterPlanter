@@ -1,7 +1,8 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 
 #include "ActorComponent/HealthComponent.h"
+#include "GameFramework/Character.h"
 
 // Sets default values for this component's properties
 UHealthComponent::UHealthComponent()
@@ -19,8 +20,14 @@ void UHealthComponent::BeginPlay()
 {
 	Super::BeginPlay();
 
-	// ...
-	
+	// ダメージ受けイベントをバインド
+	if (AActor* Owner = GetOwner())
+	{
+		Owner->OnTakeAnyDamage.AddDynamic(
+			this,
+			&UHealthComponent::TakeAnyDamage
+		);
+	}
 }
 
 
@@ -30,5 +37,30 @@ void UHealthComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActo
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
 	// ...
+}
+
+// ダメージ受け処理
+void UHealthComponent::TakeAnyDamage(
+	AActor* DamagedActor,
+	float Damage,
+	const UDamageType* DamageType,
+	AController* InstigatedBy,
+	AActor* DamageCauser)
+{
+	CurrentHP -= Damage;
+
+	if (CurrentHP <= 0.f)
+	{
+		Die();
+	}
+}
+
+// 死亡処理
+void UHealthComponent::Die()
+{
+	if (AActor* Owner = GetOwner())
+	{
+		Owner->Destroy();
+	}	
 }
 
