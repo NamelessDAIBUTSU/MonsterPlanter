@@ -5,6 +5,7 @@
 #include "Components/StaticMeshComponent.h"
 #include <Player/Body/PlayerBody.h>
 #include <Components/BoxComponent.h>
+#include <ActorComponent/DodgeComponent.h>
 
 AWarriorMonster::AWarriorMonster()
 {
@@ -58,15 +59,17 @@ void AWarriorMonster::OnAttackCollisionOverlapBegin(UPrimitiveComponent* Overlap
 	if (Player == nullptr)
 		return;
 
-	// 無敵時間中であれば無視する
-	if (Player->GetInvincibleEndTime() >= GetWorld()->GetTimeSeconds())
+	// 回避による無敵時間中であれば無視する
+	if (UDodgeComponent* DodgeComp = Player->FindComponentByClass<UDodgeComponent>())
 	{
-		UE_LOG(LogTemp, Warning, TEXT("WarriorMonster: Just Dodge!!"));
+		if (DodgeComp->GetInvincibleEndTime() >= GetWorld()->GetTimeSeconds())
+		{
+			UE_LOG(LogTemp, Warning, TEXT("WarriorMonster: Just Dodge!!"));
 
-		return;
+			return;
+		}
 	}
 
 	// Log出力
 	UE_LOG(LogTemp, Warning, TEXT("WarriorMonster: Player hit!"));
-	//Player->TakeDamage(AttackDamage, FDamageEvent(), nullptr, this);
 }

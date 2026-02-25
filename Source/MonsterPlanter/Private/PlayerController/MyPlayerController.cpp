@@ -7,6 +7,7 @@
 #include <Player/Ghost/PlayerGhost.h>
 #include "Player/Ghost/GhostManagerComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include <ActorComponent/DodgeComponent.h>
 
 AMyPlayerController::AMyPlayerController()
 {
@@ -194,9 +195,13 @@ void AMyPlayerController::Dodge()
 	if (Body == nullptr)
 		return;
 
-	if (Body->IsPlayingDodge())
+	UDodgeComponent* DodgeComp = Body->FindComponentByClass<UDodgeComponent>();
+	if (DodgeComp == nullptr)
 		return;
 
-	// 回避行動
-	Body->Dodge();
+	if (DodgeComp->IsPlayingDodge())
+		return;
+
+	// 回避
+	DodgeComp->Dodge();
 }

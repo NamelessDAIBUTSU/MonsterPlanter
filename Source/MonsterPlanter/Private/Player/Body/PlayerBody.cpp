@@ -9,6 +9,10 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Player/Ghost/GhostManagerComponent.h"
+#include "ActorComponent/DodgeComponent.h"
+#include "ActorComponent/CombatComponent.h"
+#include "ActorComponent/HealthComponent.h"
+#include "ActorComponent/VoltageComponent.h"
 
 // Sets default values
 APlayerBody::APlayerBody()
@@ -34,6 +38,12 @@ APlayerBody::APlayerBody()
 	CameraComp = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
 	CameraComp->SetupAttachment(SpringArmComp);
 	CameraComp->bUsePawnControlRotation = false;
+
+	// コンポーネントの作成
+	DodgeComp = CreateDefaultSubobject<UDodgeComponent>(TEXT("Dodge"));
+	CombatComp = CreateDefaultSubobject<UCombatComponent>(TEXT("Combat"));
+	HPComp = CreateDefaultSubobject<UHealthComponent>(TEXT("Health"));
+	VoltageComp = CreateDefaultSubobject<UVoltageComponent>(TEXT("Voltage"));
 
 	GhostManagerComp = CreateDefaultSubobject<UGhostManagerComponent>(TEXT("GhostManager"));
 }
@@ -81,41 +91,6 @@ void APlayerBody::ChangeToNormalCameraRotate()
 
 	//SpringArmComp->TargetArmLength = NormalCameraArmLength;
 	//SpringArmComp->SetRelativeRotation(NormalCameraRotation);
-}
-
-// 回避行動
-void APlayerBody::Dodge()
-{
-	if (UCharacterMovementComponent* MoveComp = GetCharacterMovement())
-	{
-		if (MoveComp->IsFalling())
-			return;
-	}
-
-	if (UAnimInstance* AnimInst = GetMesh()->GetAnimInstance())
-	{
-		if (IsValid(DodgeMontage))
-		{
-			AnimInst->Montage_Play(DodgeMontage);
-		}
-	}
-}
-
-bool APlayerBody::IsPlayingDodge()
-{
-	if (UAnimInstance* AnimInst = GetMesh()->GetAnimInstance())
-	{
-		return AnimInst->Montage_IsPlaying(DodgeMontage);
-	}
-
-	return false;
-}
-
-// 無敵状態の開始
-void APlayerBody::StartInvincible()
-{
-	// 無敵時間の終了時刻を設定
-	InvincibleEndTime = GetWorld()->GetTimeSeconds() + InvincibleDuration;
 }
 
 void APlayerBody::RotateCamera(FVector2D RotateVec)

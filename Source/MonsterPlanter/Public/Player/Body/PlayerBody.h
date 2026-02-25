@@ -48,16 +48,6 @@ public:
 	// 通常用のカメラ回転に切り替え
 	void ChangeToNormalCameraRotate();
 
-	// 回避行動
-	void Dodge();
-	bool IsPlayingDodge();
-
-	// 無敵状態の開始
-	void StartInvincible();
-
-	// 無敵時間終了時刻の取得
-	float GetInvincibleEndTime() const { return InvincibleEndTime; }
-
 	// カメラ回転
 	void RotateCamera(FVector2D RotateVec);
 
@@ -68,26 +58,34 @@ public: /* カメラ */
 	UPROPERTY(EditAnywhere)
 	float CameraYRotateSpeed = 0.1f;
 
-private:
+private: /* コンポーネント */
+	// カメラコンポーネント
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<class UCameraComponent> CameraComp;
+
+	// カメラ回転用のスプリングアームコンポーネント
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<class USpringArmComponent> SpringArmComp;
+
+	// 回避コンポーネント
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
-	TObjectPtr<UGhostManagerComponent> GhostManagerComp;
+	TObjectPtr<class UDodgeComponent> DodgeComp;
+
+	// 戦闘コンポーネント
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<class UCombatComponent> CombatComp;
+
+	// HP管理コンポーネント
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<class UHealthComponent> HPComp;
+
+	// ボルテージコンポーネント
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<class UVoltageComponent> VoltageComp;
 
 	// 保存した軌道
 	TArray<TArray<FAstralOrbitData>> OrbitDatas;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<UGhostManagerComponent> GhostManagerComp;
 
-private:
-	// 無敵時間
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
-	float InvincibleDuration = 0.15f;
-
-	// 無敵状態終了時間
-	float InvincibleEndTime = 0.f;
-
-private: /* アニメーション */
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
-	TObjectPtr<class UAnimMontage> DodgeMontage;
 };
