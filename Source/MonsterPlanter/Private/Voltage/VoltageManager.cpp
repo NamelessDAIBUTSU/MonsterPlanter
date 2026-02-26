@@ -26,3 +26,14 @@ EVoltageRank UVoltageManager::ConvertVoltageToRank(float Voltage)
         return EVoltageRank::Rank3;
     }
 }
+
+// ジャスト回避によるボルテージ増加
+void UVoltageManager::ApplyJustDodge()
+{
+    AddVoltage(JustDodgeGainVoltage); 
+}
+
+void UVoltageManager::ApplyTakeDamage()
+{
+    LostVoltage(TakeDamageLostVoltage);
+}

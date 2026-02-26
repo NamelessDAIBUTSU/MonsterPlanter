@@ -60,25 +60,12 @@ void AWarriorMonster::SetAttackCollisionEnabled(bool bEnabled)
 
 void AWarriorMonster::OnAttackCollisionOverlapBegin(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	// プレイヤーにダメージを与える
 	APlayerBody* Player = Cast<APlayerBody>(OtherActor);
 	if (Player == nullptr)
 		return;
 
-	// 回避による無敵時間中であれば無視する
-	if (UDodgeComponent* DodgeComp = Player->FindComponentByClass<UDodgeComponent>())
-	{
-		if (DodgeComp->GetInvincibleEndTime() >= GetWorld()->GetTimeSeconds())
-		{
-			UE_LOG(LogTemp, Warning, TEXT("WarriorMonster: Just Dodge!!"));
-
-			return;
-		}
-	}
-
-	// 攻撃通知
 	if (CombatComp)
 	{
-		CombatComp->Attack(OtherActor, AttackDamage);
+		CombatComp->Attack(Player, AttackDamage);
 	}
 }

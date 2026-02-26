@@ -13,6 +13,7 @@
 #include "ActorComponent/CombatComponent.h"
 #include "ActorComponent/HealthComponent.h"
 #include "ActorComponent/VoltageComponent.h"
+#include <Voltage/VoltageManager.h>
 
 // Sets default values
 APlayerBody::APlayerBody()
@@ -52,6 +53,22 @@ APlayerBody::APlayerBody()
 void APlayerBody::BeginPlay()
 {
 	Super::BeginPlay();
+
+	// イベントのバインド
+
+	// ジャスト回避
+	if (UVoltageManager* VoltageManager = GetWorld()->GetSubsystem<UVoltageManager>())
+	{
+		if (DodgeComp)
+		{
+			DodgeComp->OnJustDodgeDelegate.AddUObject(VoltageManager, &UVoltageManager::ApplyJustDodge);
+		}
+	}
+
+	// 攻撃受信
+	if (CombatComp)
+	{
+	}
 }
 
 // Called every frame
@@ -65,6 +82,18 @@ void APlayerBody::Tick(float DeltaTime)
 void APlayerBody::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
+}
+
+// 攻撃を受信
+EAttackResult APlayerBody::ReceiveAttack(const FAttackData& AttackData)
+{
+	// 戦闘はCombatComponentに任せる
+	if (CombatComp)
+	{
+		return CombatComp->ReceiveAttack(AttackData);
+	}
+
+	return EAttackResult::None;
 }
 
 // 軌道の保存

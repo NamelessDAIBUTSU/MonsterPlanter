@@ -49,6 +49,9 @@ void UHealthComponent::TakeAnyDamage(
 {
 	CurrentHP -= Damage;
 
+	// HP更新デリゲートの発火
+	OnUpdateHPDelegate.Broadcast(CurrentHP, Damage);
+
 	if (CurrentHP <= 0.f)
 	{
 		Die();

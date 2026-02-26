@@ -6,6 +6,9 @@
 #include "Components/ActorComponent.h"
 #include "HealthComponent.generated.h"
 
+// HP更新デリゲート
+DECLARE_MULTICAST_DELEGATE_TwoParams(FOnUpdateHPDelegate, float, float);
+
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class MONSTERPLANTER_API UHealthComponent : public UActorComponent
@@ -34,6 +37,10 @@ public:
 private:
 	// 死亡処理
 	void Die();
+
+public:
+	// HP更新デリゲート
+	FOnUpdateHPDelegate OnUpdateHPDelegate;
 
 private:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))

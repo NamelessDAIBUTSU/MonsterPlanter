@@ -195,13 +195,9 @@ void AMyPlayerController::Dodge()
 	if (Body == nullptr)
 		return;
 
-	UDodgeComponent* DodgeComp = Body->FindComponentByClass<UDodgeComponent>();
-	if (DodgeComp == nullptr)
-		return;
-
-	if (DodgeComp->IsPlayingDodge())
-		return;
-
-	// 回避
-	DodgeComp->Dodge();
+	// 回避アクション
+	if (UDodgeComponent* DodgeComp = Body->FindComponentByClass<UDodgeComponent>())
+	{
+		DodgeComp->Dodge();
+	}
 }

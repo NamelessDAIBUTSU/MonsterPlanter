@@ -4,6 +4,7 @@
 #include "ActorComponent/DodgeComponent.h"
 #include <Player/Body/PlayerBody.h>
 #include "GameFramework/CharacterMovementComponent.h"
+#include <Voltage/VoltageManager.h>
 
 // Sets default values for this component's properties
 UDodgeComponent::UDodgeComponent()
@@ -47,7 +48,8 @@ void UDodgeComponent::Dodge()
 			return;
 	}
 
-	if (IsPlayingDodge())
+	// すでに回避モーション中なら何もしない
+	if (IsDodging())
 		return;
 
 	// 回避モンタージュの再生
@@ -60,8 +62,21 @@ void UDodgeComponent::Dodge()
 	}
 }
 
+// ジャスト回避を通知
+void UDodgeComponent::ApplyJustDodge()
+{
+	// デリゲートにバインドしたイベントを発火
+	OnJustDodgeDelegate.Broadcast();
+
+	UVoltageManager* VoltageManager = GetWorld()->GetSubsystem<UVoltageManager>();
+	if (VoltageManager == nullptr)
+		return;
+
+	VoltageManager->ApplyJustDodge();
+}
+
 // 回避中か
-bool UDodgeComponent::IsPlayingDodge()
+bool UDodgeComponent::IsDodging()
 {
 	APlayerBody* Owner = Cast<APlayerBody>(GetOwner());
 	if (Owner == nullptr)
@@ -73,6 +88,12 @@ bool UDodgeComponent::IsPlayingDodge()
 	}
 
 	return false;
+}
+
+// ジャスト回避判定
+bool UDodgeComponent::IsJustDodging()
+{
+	return GetInvincibleEndTime() >= GetWorld()->GetTimeSeconds();
 }
 
 // 無敵状態の開始

@@ -7,33 +7,34 @@
 #include "InputActionValue.h"
 #include "Interface/Weighted.h"
 #include <Player/PlayerDef.h>
+#include "Interface/AttackReceiver.h"
 #include "PlayerBody.generated.h"
 
 class APlayerGhost;
 class UGhostManagerComponent;
 
 UCLASS()
-class MONSTERPLANTER_API APlayerBody : public ACharacter, public IWeighted
+class MONSTERPLANTER_API APlayerBody : public ACharacter, public IWeighted, public IAttackReceiver
 {
 	GENERATED_BODY()
 
 public:
-	// Sets default values for this pawn's properties
 	APlayerBody();
 
 protected:
-	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
 public:	
-	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 public: /* IWeighted */
 	virtual float GetWeight() const override { return 1.0f; }
+
+public: /* IAttackReceiver */
+	// 攻撃を受信
+	virtual EAttackResult ReceiveAttack(const FAttackData& AttackData) override;
 
 public:
 	// ゴースト管理コンポーネントの取得

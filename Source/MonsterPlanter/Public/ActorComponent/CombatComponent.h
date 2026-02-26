@@ -4,8 +4,11 @@
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
+#include "Interface/AttackReceiver.h"
 #include "CombatComponent.generated.h"
 
+// 攻撃受信デリゲート
+DECLARE_MULTICAST_DELEGATE(FOnReceiveAttackDelegate);
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class MONSTERPLANTER_API UCombatComponent : public UActorComponent
@@ -28,6 +31,10 @@ public:
 	// 攻撃処理
 	void Attack(AActor* DamagedActor, float Damage);
 
-private:
+	// 攻撃受信処理
+	EAttackResult ReceiveAttack(const FAttackData& AttackData);
 
+public:
+	// 攻撃受信デリゲート
+	FOnReceiveAttackDelegate OnReceiveAttackDelegate;
 };

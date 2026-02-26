@@ -6,6 +6,9 @@
 #include "Components/ActorComponent.h"
 #include "DodgeComponent.generated.h"
 
+// ジャスト回避デリゲート
+DECLARE_MULTICAST_DELEGATE(FOnJustDodgeDelegate);
+
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class MONSTERPLANTER_API UDodgeComponent : public UActorComponent
@@ -28,14 +31,23 @@ public:
 	// 回避行動
 	void Dodge();
 
+	// ジャスト回避を通知
+	void ApplyJustDodge();
+
 	// 回避中か
-	bool IsPlayingDodge();
+	bool IsDodging();
+	// ジャスト回避判定
+	bool IsJustDodging();
 
 	// 無敵状態の開始
 	void StartInvincible();
 
 	// 無敵時間終了時刻の取得
 	float GetInvincibleEndTime() const;
+
+public:
+	// ジャスト回避通知デリゲート
+	FOnJustDodgeDelegate OnJustDodgeDelegate;
 
 private:
 	// 回避アニメーションモンタージュ
