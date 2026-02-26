@@ -3,7 +3,7 @@
 
 #include "Room/FallTrigger.h"
 #include "Components/BoxComponent.h"
-#include <Player/Body/PlayerBody.h>
+#include <Player/PlayerCharacter.h>
 #include <Room/RoomManager.h>
 #include "Room/RoomBase.h"
 
@@ -39,7 +39,7 @@ void AFallTrigger::Tick(float DeltaTime)
 void AFallTrigger::OnOverlapBegin(class UPrimitiveComponent* OverlappedComp, class AActor* OtherActor,
 	class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	APlayerBody* PlayerBody = Cast<APlayerBody>(OtherActor);
+	APlayerCharacter* PlayerBody = Cast<APlayerCharacter>(OtherActor);
 	if (PlayerBody == nullptr)
 		return;
 
@@ -57,7 +57,7 @@ void AFallTrigger::OnOverlapBegin(class UPrimitiveComponent* OverlappedComp, cla
 void AFallTrigger::OnOverlapEnd(class UPrimitiveComponent* OverlappedComp, class AActor* OtherActor,
 	class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
 {
-	APlayerBody* PlayerBody = Cast<APlayerBody>(OtherActor);
+	APlayerCharacter* PlayerBody = Cast<APlayerCharacter>(OtherActor);
 	if (PlayerBody == nullptr)
 		return;
 

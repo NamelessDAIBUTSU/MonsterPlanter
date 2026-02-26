@@ -4,7 +4,7 @@
 #include "ActorComponent/CombatComponent.h"
 #include <Kismet/GameplayStatics.h>
 #include <Interface/AttackReceiver.h>
-#include <Player/Body/PlayerBody.h>
+#include <Player/PlayerCharacter.h>
 #include <ActorComponent/DodgeComponent.h>
 
 // Sets default values for this component's properties

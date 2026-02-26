@@ -3,7 +3,7 @@
 
 #include "Room/EntryTrigger.h"
 #include "Components/BoxComponent.h"
-#include <Player/Body/PlayerBody.h>
+#include <Player/PlayerCharacter.h>
 #include <Room/RoomBase.h>
 #include <Room/RoomManager.h>
 

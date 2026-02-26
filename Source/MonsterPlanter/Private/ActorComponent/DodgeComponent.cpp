@@ -2,7 +2,7 @@
 
 
 #include "ActorComponent/DodgeComponent.h"
-#include <Player/Body/PlayerBody.h>
+#include <Player/PlayerCharacter.h>
 #include "GameFramework/CharacterMovementComponent.h"
 #include <Voltage/VoltageManager.h>
 
@@ -38,7 +38,7 @@ void UDodgeComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActor
 // 回避行動
 void UDodgeComponent::Dodge()
 {
-	APlayerBody* Owner = Cast<APlayerBody>(GetOwner());
+	APlayerCharacter* Owner = Cast<APlayerCharacter>(GetOwner());
 	if (Owner == nullptr)
 		return;
 
@@ -78,7 +78,7 @@ void UDodgeComponent::ApplyJustDodge()
 // 回避中か
 bool UDodgeComponent::IsDodging()
 {
-	APlayerBody* Owner = Cast<APlayerBody>(GetOwner());
+	APlayerCharacter* Owner = Cast<APlayerCharacter>(GetOwner());
 	if (Owner == nullptr)
 		return false;
 

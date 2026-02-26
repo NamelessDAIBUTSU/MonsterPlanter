@@ -5,7 +5,7 @@
 #include <Room/RoomManager.h>
 #include "LevelSequenceActor.h"
 #include "LevelSequencePlayer.h"
-#include <Player/Body/PlayerBody.h>
+#include <Player/PlayerCharacter.h>
 #include <GameFramework/CharacterMovementComponent.h>
 
 ARoomBase::ARoomBase()
@@ -107,7 +107,7 @@ void ARoomBase::StopEntrySequence()
 void ARoomBase::OnRespawnPlayer()
 {
 	// プレイヤーの取得
-	APlayerBody* PlayerBody = Cast<APlayerBody>(UGameplayStatics::GetPlayerPawn(GetWorld(), 0));
+	APlayerCharacter* PlayerBody = Cast<APlayerCharacter>(UGameplayStatics::GetPlayerPawn(GetWorld(), 0));
 	if (PlayerBody == nullptr)
 		return;
 
@@ -126,7 +126,7 @@ void ARoomBase::OnEntryPlayer()
 		return;
 
 	// プレイヤーの取得
-	APlayerBody* PlayerBody = Cast<APlayerBody>(UGameplayStatics::GetPlayerPawn(GetWorld(), 0));
+	APlayerCharacter* PlayerBody = Cast<APlayerCharacter>(UGameplayStatics::GetPlayerPawn(GetWorld(), 0));
 	if (PlayerBody == nullptr)
 		return;
 

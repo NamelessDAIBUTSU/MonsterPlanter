@@ -3,7 +3,7 @@
 
 #include "Monster/Warrior/WarriorMonster.h"
 #include "Components/StaticMeshComponent.h"
-#include <Player/Body/PlayerBody.h>
+#include <Player/PlayerCharacter.h>
 #include <Components/BoxComponent.h>
 #include <ActorComponent/DodgeComponent.h>
 #include <ActorComponent/CombatComponent.h>
@@ -60,7 +60,7 @@ void AWarriorMonster::SetAttackCollisionEnabled(bool bEnabled)
 
 void AWarriorMonster::OnAttackCollisionOverlapBegin(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	APlayerBody* Player = Cast<APlayerBody>(OtherActor);
+	APlayerCharacter* Player = Cast<APlayerCharacter>(OtherActor);
 	if (Player == nullptr)
 		return;
 

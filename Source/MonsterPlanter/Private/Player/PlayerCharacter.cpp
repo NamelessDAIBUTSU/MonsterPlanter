@@ -1,22 +1,18 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "Player/Body/PlayerBody.h"
-#include "Player/Ghost/PlayerGhost.h"
-#include <Player/Astral/PlayerAstral.h>
+#include "Player/PlayerCharacter.h"
 #include <EnhancedInputComponent.h>
 #include "Camera/CameraComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
-#include "Player/Ghost/GhostManagerComponent.h"
 #include "ActorComponent/DodgeComponent.h"
 #include "ActorComponent/CombatComponent.h"
 #include "ActorComponent/HealthComponent.h"
-#include "ActorComponent/VoltageComponent.h"
 #include <Voltage/VoltageManager.h>
 
 // Sets default values
-APlayerBody::APlayerBody()
+APlayerCharacter::APlayerCharacter()
 {
 	PrimaryActorTick.bCanEverTick = true;
 	PrimaryActorTick.bStartWithTickEnabled = true;
@@ -44,18 +40,14 @@ APlayerBody::APlayerBody()
 	DodgeComp = CreateDefaultSubobject<UDodgeComponent>(TEXT("Dodge"));
 	CombatComp = CreateDefaultSubobject<UCombatComponent>(TEXT("Combat"));
 	HPComp = CreateDefaultSubobject<UHealthComponent>(TEXT("Health"));
-	VoltageComp = CreateDefaultSubobject<UVoltageComponent>(TEXT("Voltage"));
-
-	GhostManagerComp = CreateDefaultSubobject<UGhostManagerComponent>(TEXT("GhostManager"));
 }
 
 // Called when the game starts or when spawned
-void APlayerBody::BeginPlay()
+void APlayerCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 
 	// イベントのバインド
-
 	// ジャスト回避
 	if (UVoltageManager* VoltageManager = GetWorld()->GetSubsystem<UVoltageManager>())
 	{
@@ -64,28 +56,23 @@ void APlayerBody::BeginPlay()
 			DodgeComp->OnJustDodgeDelegate.AddUObject(VoltageManager, &UVoltageManager::ApplyJustDodge);
 		}
 	}
-
-	// 攻撃受信
-	if (CombatComp)
-	{
-	}
 }
 
 // Called every frame
-void APlayerBody::Tick(float DeltaTime)
+void APlayerCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
 }
 
 // Called to bind functionality to input
-void APlayerBody::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
+void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 }
 
 // 攻撃を受信
-EAttackResult APlayerBody::ReceiveAttack(const FAttackData& AttackData)
+EAttackResult APlayerCharacter::ReceiveAttack(const FAttackData& AttackData)
 {
 	// 戦闘はCombatComponentに任せる
 	if (CombatComp)
@@ -96,33 +83,7 @@ EAttackResult APlayerBody::ReceiveAttack(const FAttackData& AttackData)
 	return EAttackResult::None;
 }
 
-// 軌道の保存
-void APlayerBody::SetOrbitData(const TArray<FAstralOrbitData>& Data)
-{
-	OrbitDatas.Add(Data);
-}
-
-// 落下用のカメラ回転に切り替え
-void APlayerBody::ChangeToFallCameraRotate()
-{
-	if (SpringArmComp == nullptr)
-		return;
-
-	//SpringArmComp->TargetArmLength = FallCameraArmLength;
-	//SpringArmComp->SetRelativeRotation(FallCameraRotation);
-}
-
-// 通常用のカメラ回転に切り替え
-void APlayerBody::ChangeToNormalCameraRotate()
-{
-	if (SpringArmComp == nullptr)
-		return;
-
-	//SpringArmComp->TargetArmLength = NormalCameraArmLength;
-	//SpringArmComp->SetRelativeRotation(NormalCameraRotation);
-}
-
-void APlayerBody::RotateCamera(FVector2D RotateVec)
+void APlayerCharacter::RotateCamera(FVector2D RotateVec)
 {
 	if (IsValid(SpringArmComp) == false)
 		return;

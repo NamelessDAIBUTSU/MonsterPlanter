@@ -8,18 +8,18 @@
 #include "Interface/Weighted.h"
 #include <Player/PlayerDef.h>
 #include "Interface/AttackReceiver.h"
-#include "PlayerBody.generated.h"
+#include "PlayerCharacter.generated.h"
 
 class APlayerGhost;
 class UGhostManagerComponent;
 
 UCLASS()
-class MONSTERPLANTER_API APlayerBody : public ACharacter, public IWeighted, public IAttackReceiver
+class MONSTERPLANTER_API APlayerCharacter : public ACharacter, public IAttackReceiver
 {
 	GENERATED_BODY()
 
 public:
-	APlayerBody();
+	APlayerCharacter();
 
 protected:
 	virtual void BeginPlay() override;
@@ -29,26 +29,11 @@ public:
 
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
-public: /* IWeighted */
-	virtual float GetWeight() const override { return 1.0f; }
-
 public: /* IAttackReceiver */
 	// 攻撃を受信
 	virtual EAttackResult ReceiveAttack(const FAttackData& AttackData) override;
 
 public:
-	// ゴースト管理コンポーネントの取得
-	UGhostManagerComponent* GetGhostManagerComponent() const { return GhostManagerComp; }
-
-	// 軌道の保存
-	void SetOrbitData(const TArray<FAstralOrbitData>& Data);
-	TArray<TArray<FAstralOrbitData>> GetOrbitDatas() const { return OrbitDatas; }
-
-	// 落下用のカメラ回転に切り替え
-	void ChangeToFallCameraRotate();
-	// 通常用のカメラ回転に切り替え
-	void ChangeToNormalCameraRotate();
-
 	// カメラ回転
 	void RotateCamera(FVector2D RotateVec);
 
@@ -79,14 +64,4 @@ private: /* コンポーネント */
 	// HP管理コンポーネント
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<class UHealthComponent> HPComp;
-
-	// ボルテージコンポーネント
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
-	TObjectPtr<class UVoltageComponent> VoltageComp;
-
-	// 保存した軌道
-	TArray<TArray<FAstralOrbitData>> OrbitDatas;
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
-	TObjectPtr<UGhostManagerComponent> GhostManagerComp;
-
 };

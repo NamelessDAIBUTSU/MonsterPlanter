@@ -34,23 +34,6 @@ public:
 	UFUNCTION()
 	void Dodge();
 
-	// アストラルモードに変更
-	UFUNCTION()
-	void ChangeToAstralMode();
-	// 本体モードに変更
-	UFUNCTION()
-	void ChangeToBodyMode();
-	// ゴーストの生成
-	UFUNCTION()
-	void SpawnGhost();
-
-private:
-	// 本体用入力コンテキストをアクティブにする
-	void ActivateBodyInputContext();
-
-	// アストラル用入力コンテキストをアクティブにする
-	void ActivateAstralInputContext();
-
 public:
 	// 本体用入力コンテキスト
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
@@ -62,20 +45,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
 	TObjectPtr<class UInputAction> IA_Move;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
-	TObjectPtr<class UInputAction> IA_Astral;
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
-	TObjectPtr<class UInputAction> IA_Ghost;
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
-	TObjectPtr<class UInputAction> IA_Body;
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
 	TObjectPtr<class UInputAction> IA_Dodge;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
 	TObjectPtr<class UInputAction> IA_Mouse;
-
-	// 生成するゴーストクラス
-	UPROPERTY(EditAnywhere, BlueprintReadOnly)
-	TSubclassOf<APawn> GhostClass;
-	// 生成するアストラルクラス
-	UPROPERTY(EditAnywhere, BlueprintReadOnly)
-	TSubclassOf<APawn> AstralClass;
 };
